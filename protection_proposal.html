@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>连锁客户保护机制建议书</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#050A18;--bg2:#0f1724;--card:rgba(15,23,36,0.7);--gold:#C9A84C;--gold-l:#E8D48B;--cyan:#00D4AA;--cyan-l:#33E8C4;--red:#C0392B;--red-l:#E74C3C;--t1:#F0F0F0;--t2:#A0AEC0;--t3:#6B7B8D;--border:rgba(201,168,76,0.15);--glow-g:rgba(201,168,76,0.3);--glow-c:rgba(0,212,170,0.3)}
+html{scroll-behavior:smooth}
+body{font-family:"Microsoft YaHei","PingFang SC","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--t1);line-height:1.8;overflow-x:hidden}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(5,10,24,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 20px}
+.nav-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:52px}
+.nav-logo{font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px}
+.nav-links{display:flex;gap:2px;list-style:none;overflow-x:auto}
+.nav-links a{color:var(--t2);text-decoration:none;font-size:12px;padding:5px 9px;border-radius:6px;white-space:nowrap;transition:all .25s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);background:rgba(201,168,76,0.1)}
+.ctn{max-width:1200px;margin:0 auto;padding:0 24px}
+section{padding:80px 0;opacity:0;transform:translateY(40px);transition:opacity .7s,transform .7s}
+section.visible{opacity:1;transform:translateY(0)}
+.gc{background:var(--card);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:16px;padding:32px;transition:border-color .3s,box-shadow .3s}
+.gc:hover{border-color:rgba(201,168,76,0.3);box-shadow:0 0 30px rgba(201,168,76,0.08)}
+.sn{font-size:12px;color:var(--gold);letter-spacing:3px;margin-bottom:8px}
+.st{font-size:clamp(24px,3.5vw,36px);font-weight:700;margin-bottom:12px;background:linear-gradient(90deg,var(--t1),var(--t2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sd{color:var(--t2);font-size:16px;margin-bottom:40px;max-width:700px}
+
+/* Cover */
+.cover{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at 50% 30%,rgba(201,168,76,0.06) 0%,transparent 60%),radial-gradient(ellipse at 80% 70%,rgba(0,212,170,0.04) 0%,transparent 50%);padding-top:52px}
+.cover-badge{display:inline-block;padding:6px 20px;border:1px solid var(--gold);border-radius:100px;font-size:13px;color:var(--gold);letter-spacing:2px;margin-bottom:32px}
+.cover h1{font-size:clamp(32px,5vw,56px);font-weight:800;background:linear-gradient(135deg,var(--gold),var(--gold-l),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:16px;line-height:1.3}
+.cover-sub{font-size:clamp(16px,2.5vw,22px);color:var(--t2);margin-bottom:48px;font-weight:300}
+.cm{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-bottom:48px}
+.cm-i{text-align:center}
+.cm-n{font-size:clamp(36px,5vw,52px);font-weight:800;line-height:1.1}
+.cm-n.gold{color:var(--gold)}.cm-n.cyan{color:var(--cyan)}.cm-n.red{color:var(--red-l)}
+.cm-l{font-size:13px;color:var(--t3);margin-top:4px}
+.cover-date{color:var(--t3);font-size:14px}
+.cover-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);color:var(--t3);font-size:12px;animation:fl 2s ease-in-out infinite}
+@keyframes fl{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-10px)}}
+
+/* Big numbers */
+.bn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-bottom:40px}
+.bn-card{text-align:center;padding:36px 24px}
+.bn-card .icon{font-size:32px;margin-bottom:12px}
+.bn-card .val{font-size:42px;font-weight:800;margin-bottom:4px}
+.bn-card .val.gold{color:var(--gold)}.bn-card .val.cyan{color:var(--cyan)}.bn-card .val.red{color:var(--red-l)}
+.bn-card .dsc{font-size:14px;color:var(--t2)}
+.sum-con{padding:24px 32px;border-left:3px solid var(--gold);background:rgba(201,168,76,0.05);border-radius:0 12px 12px 0;font-size:16px;line-height:1.9;color:var(--t2)}
+.sum-con strong{color:var(--gold)}
+
+/* Pain */
+.pain-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-bottom:40px}
+.pain-c{padding:28px;border-left:3px solid var(--red)}
+.pain-c h3{font-size:18px;color:var(--red-l);margin-bottom:8px}
+.pain-c p{font-size:14px;color:var(--t2);line-height:1.8}
+.pain-c .imp{margin-top:12px;padding:8px 12px;background:rgba(192,57,43,0.1);border-radius:8px;font-size:13px;color:var(--red-l)}
+
+/* Compare */
+.cmp-g{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:stretch;margin-bottom:32px}
+.cmp-c{padding:24px;text-align:center}
+.cmp-c h4{font-size:14px;margin-bottom:16px;color:var(--t3);letter-spacing:1px}
+.mr{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+.mr:last-child{border-bottom:none}
+.mr .ml{font-size:13px;color:var(--t2)}
+.mr .mv{font-size:16px;font-weight:700}
+.cmp-c.before .mv{color:var(--t3)}.cmp-c.after .mv{color:var(--cyan)}
+.cmp-arrow{display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--gold)}
+.chart-box{width:100%;height:380px;margin:24px 0}
+
+/* Timeline */
+.tl{position:relative;padding-left:32px;margin:32px 0}
+.tl::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--red),var(--gold),var(--cyan))}
+.tl-i{position:relative;margin-bottom:24px;padding:16px 20px;background:rgba(255,255,255,0.02);border-radius:10px}
+.tl-i::before{content:'';position:absolute;left:-28px;top:22px;width:12px;height:12px;border-radius:50%;border:2px solid}
+.tl-i.pb::before{border-color:var(--red);background:rgba(192,57,43,0.3)}
+.tl-i.pt::before{border-color:var(--gold);background:rgba(201,168,76,0.3)}
+.tl-i.pa::before{border-color:var(--cyan);background:rgba(0,212,170,0.3)}
+.tl-i .date{font-size:12px;color:var(--t3);margin-bottom:4px}
+.tl-i h4{font-size:15px;margin-bottom:4px}
+.tl-i p{font-size:13px;color:var(--t2)}
+
+/* Insight */
+.ib{display:flex;gap:12px;padding:20px;border-radius:12px;margin:20px 0;font-size:14px;line-height:1.8}
+.ib.data{background:rgba(0,212,170,0.06);border-left:3px solid var(--cyan)}
+.ib.analysis{background:rgba(201,168,76,0.06);border-left:3px solid var(--gold)}
+.ib.conclusion{background:rgba(0,212,170,0.08);border-left:3px solid var(--cyan)}
+.ib.warning{background:rgba(192,57,43,0.06);border-left:3px solid var(--red)}
+.ib .ic{font-size:18px;flex-shrink:0;margin-top:2px}
+.ib .tx{color:var(--t2)}.ib .tx strong{color:var(--t1)}
+
+/* Opportunity */
+.opp{padding:28px 32px;background:linear-gradient(135deg,rgba(0,212,170,0.08),rgba(201,168,76,0.08));border:1px solid rgba(0,212,170,0.2);border-radius:16px;text-align:center;margin:32px 0}
+.opp h3{font-size:20px;color:var(--cyan);margin-bottom:8px}
+.opp .big{font-size:48px;font-weight:800;color:var(--gold);margin:12px 0}
+.opp p{color:var(--t2);font-size:15px}
+
+/* Table */
+.lt-w{overflow-x:auto;margin:24px 0}
+.lt{width:100%;border-collapse:collapse;font-size:14px}
+.lt th,.lt td{padding:14px 18px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.06)}
+.lt th{color:var(--gold);font-weight:600;font-size:12px;letter-spacing:1px}
+.lt td{color:var(--t2)}
+.lt tr:hover td{color:var(--t1);background:rgba(255,255,255,0.02)}
+.lt .total td{color:var(--red-l);font-weight:700;font-size:16px;border-top:2px solid var(--red)}
+
+/* Solution */
+.sol-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.sol-c{padding:28px}
+.sol-n{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;margin-bottom:16px;background:rgba(201,168,76,0.15);color:var(--gold)}
+.sol-c h3{font-size:17px;margin-bottom:8px}
+.sol-c p{font-size:13px;color:var(--t2);line-height:1.8}
+.sol-c ul{list-style:none;margin-top:12px}
+.sol-c ul li{font-size:13px;color:var(--t2);padding:4px 0 4px 16px;position:relative}
+.sol-c ul li::before{content:'\2192';position:absolute;left:0;color:var(--cyan)}
+
+/* ROI */
+.roi-g{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:24px 0}
+.roi-c{padding:28px;text-align:center}
+.roi-c h4{font-size:13px;letter-spacing:1px;color:var(--t3);margin-bottom:16px}
+.roi-c .rv{font-size:36px;font-weight:800;margin-bottom:8px}
+.roi-c.cur .rv{color:var(--red-l)}.roi-c.fut .rv{color:var(--cyan)}
+.roi-c .rd{font-size:13px;color:var(--t2)}
+
+/* Roadmap */
+.rm-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin:32px 0}
+.rm-p{padding:24px}
+.rm-tag{display:inline-block;padding:3px 12px;border-radius:100px;font-size:11px;font-weight:600;margin-bottom:12px}
+.rm-p.p1 .rm-tag{background:rgba(0,212,170,0.15);color:var(--cyan)}
+.rm-p.p2 .rm-tag{background:rgba(201,168,76,0.15);color:var(--gold)}
+.rm-p.p3 .rm-tag{background:rgba(240,240,240,0.1);color:var(--t2)}
+.rm-p h4{font-size:16px;margin-bottom:8px}
+.rm-p p{font-size:13px;color:var(--t2);line-height:1.8}
+.rm-p .time{font-size:12px;color:var(--t3);margin-top:12px}
+
+/* CTA */
+.cta{text-align:center;padding:100px 0}
+.cta .hl{font-size:clamp(24px,4vw,40px);font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--gold),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cta .sub{font-size:18px;color:var(--t2);margin-bottom:40px;max-width:600px;margin-left:auto;margin-right:auto}
+.cta-box{display:inline-block;padding:20px 40px;background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(0,212,170,0.15));border:1px solid rgba(201,168,76,0.3);border-radius:16px;font-size:16px;color:var(--gold);font-weight:600}
+.footer{text-align:center;padding:40px 0;border-top:1px solid var(--border);color:var(--t3);font-size:12px}
+
+/* Price insight */
+.price-box{margin-top:32px;padding:24px;background:linear-gradient(135deg,rgba(201,168,76,0.06),rgba(192,57,43,0.06));border:1px solid rgba(201,168,76,0.15);border-radius:14px}
+.price-box h4{color:var(--gold);font-size:16px;margin-bottom:8px}
+.price-box p{color:var(--t2);font-size:14px}
+
+@media(max-width:768px){.ctn{padding:0 16px}section{padding:60px 0}.gc{padding:20px}.cmp-g{grid-template-columns:1fr;gap:12px}.cmp-arrow{transform:rotate(90deg)}.nav-links{display:none}.roi-g{grid-template-columns:1fr}.cm{gap:24px}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="navbar">
+<div class="nav-in">
+<div class="nav-logo">📋 连锁客户保护机制建议书</div>
+<ul class="nav-links">
+<li><a href="#cover">封面</a></li>
+<li><a href="#summary">摘要</a></li>
+<li><a href="#diagnosis">诊断</a></li>
+<li><a href="#case1">郑千白切</a></li>
+<li><a href="#case2">山外公</a></li>
+<li><a href="#loss">损失</a></li>
+<li><a href="#solution">方案</a></li>
+<li><a href="#roi">回报</a></li>
+<li><a href="#roadmap">路径</a></li>
+<li><a href="#cta">结论</a></li>
+</ul>
+</div>
+</nav>
+
+<!-- 1. COVER -->
+<section class="cover visible" id="cover">
+<div class="ctn">
+<div>
+<div class="cover-badge">CONFIDENTIAL · 内部决策参考</div>
+<h1>连锁客户保护机制<br>建议书</h1>
+<p class="cover-sub">以数据为据，以案例为证——连锁组客户资源保护机制的必要性与实施路径</p>
+<div class="cm">
+<div class="cm-i"><div class="cm-n gold counter-val" data-target="648" data-suffix="%">0%</div><div class="cm-l">GMV增长率（郑千白切）</div></div>
+<div class="cm-i"><div class="cm-n cyan counter-val" data-target="20" data-suffix="倍">0倍</div><div class="cm-l">山外公体量 vs 郑千白切</div></div>
+<div class="cm-i"><div class="cm-n red counter-val" data-target="70" data-suffix="%">0%</div><div class="cm-l">山外公待拿份额</div></div>
+</div>
+<p class="cover-date">快驴华南连锁组 · 2026年4月28日</p>
+</div>
+</div>
+<div class="cover-scroll">↓ 向下滚动阅读</div>
+</section>
+
+<!-- 2. SUMMARY -->
+<section id="summary">
+<div class="ctn">
+<div class="sn">SECTION 01</div>
+<h2 class="st">执行摘要</h2>
+<p class="sd">30秒了解核心决策要点</p>
+<div class="bn-grid">
+<div class="gc bn-card"><div class="icon">📈</div><div class="val gold counter-val" data-target="648" data-suffix="%">0%</div><div class="dsc">连锁组介入后GMV增长率<br>（1.1万 → 8.5万/34天）</div></div>
+<div class="gc bn-card"><div class="icon">🏪</div><div class="val cyan counter-val" data-target="60" data-suffix="家">0家</div><div class="dsc">山外公下月新增门店<br>（战略级KA客户爆发期）</div></div>
+<div class="gc bn-card"><div class="icon">⚠️</div><div class="val red counter-val" data-target="70" data-suffix="%">0%</div><div class="dsc">山外公待拿市场份额<br>（因机制问题无法突破）</div></div>
+</div>
+<div class="sum-con">
+<strong>核心结论：</strong>当前"双周切分"机制严重制约连锁组对KA客户的深度运营能力。实证数据显示，连锁组专业运营可将系统判定为"L1无价值客户"的连锁品牌做到<strong>月销8-10万</strong>的稳定产出。而山外公等战略级客户——体量是郑千白切的<strong>20倍</strong>，下月即将新开<strong>50-60家</strong>门店——正因地推切分干扰导致<strong>70%份额无法拿下</strong>。建议立即建立连锁客户保护机制，避免战略级客户资源流失。
+</div>
+</div>
+</section>
+
+<!-- 3. DIAGNOSIS -->
+<section id="diagnosis">
+<div class="ctn">
+<div class="sn">SECTION 02</div>
+<h2 class="st">问题诊断：三大机制痛点</h2>
+<p class="sd">不是能力问题，是机制问题</p>
+<div class="pain-g">
+<div class="gc pain-c">
+<div style="font-size:28px;margin-bottom:12px">🔄</div>
+<h3>痛点一：双周切分机制</h3>
+<p>连锁品牌门店每两周面临地推切分风险，导致连锁组刚建立的客户关系和采购习惯被打断。郑千白切和山外公均遭遇此问题，客户体验极差，合作粘性难以建立。</p>
+<div class="imp">📊 实际影响：山外公70%市场份额无法突破，直接损失源于此机制</div>
+</div>
+<div class="gc pain-c">
+<div style="font-size:28px;margin-bottom:12px">⚔️</div>
+<h3>痛点二：To C作业 vs To B需求</h3>
+<p>地推以To C模式（单店、短期、价格驱动）服务连锁客户，而KA品牌方需要To B模式（总部统管、长期规划、综合赋能）。品牌方因To C作业模式不愿接受地推统管，但现有机制无法有效隔离。</p>
+<div class="imp">📊 实际影响：品牌方明确希望用To B思维合作，机制不匹配导致合作受阻</div>
+</div>
+<div class="gc pain-c">
+<div style="font-size:28px;margin-bottom:12px">🏷️</div>
+<h3>痛点三：客户分级失真</h3>
+<p>公司系统将部分连锁客户判定为"L1无价值客户"，但实际上这些客户通过连锁组专业运营后产出极高。郑千白切曾被判定为L1，连锁组介入后月销达8-10万且持续增长。</p>
+<div class="imp">📊 实际影响：系统分级导致优质客户资源被忽视或错配</div>
+</div>
+</div>
+<div id="chart-diagnosis" class="chart-box"></div>
+<div class="ib conclusion">
+<div class="ic">✅</div>
+<div class="tx"><strong>诊断结论：</strong>连锁客户流失不是团队能力问题，而是机制设计缺陷。三大痛点形成负向循环：分级失真→资源错配→地推切分→客户体验差→份额流失。打破循环的关键是建立保护机制。</div>
+</div>
+</div>
+</section>
+
+<!-- 4. CASE 1: 郑千白切 -->
+<section id="case1">
+<div class="ctn">
+<div class="sn">SECTION 03</div>
+<h2 class="st">案例一：郑千白切的逆袭</h2>
+<p class="sd">从L1"无价值客户"到月销8-10万稳定客户的蜕变之路</p>
+<div style="display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap">
+<span style="padding:4px 14px;border-radius:100px;font-size:12px;font-weight:600;background:rgba(0,212,170,0.15);color:var(--cyan)">✅ 转化成功</span>
+<span style="padding:4px 14px;border-radius:100px;font-size:12px;font-weight:600;background:rgba(201,168,76,0.15);color:var(--gold)">GMV +648%</span>
+<span style="padding:4px 14px;border-radius:100px;font-size:12px;font-weight:600;background:rgba(201,168,76,0.15);color:var(--gold)">订单量 +913%</span>
+</div>
+
+<div class="cmp-g">
+<div class="gc cmp-c before">
+<h4>🔴 地推运营期（34天）</h4>
+<div class="mr"><span class="ml">GMV</span><span class="mv">1.1万</span></div>
+<div class="mr"><span class="ml">采购模式</span><span class="mv">偶发采购</span></div>
+<div class="mr"><span class="ml">下单频率</span><span class="mv">不稳定</span></div>
+<div class="mr"><span class="ml">客户认知</span><span class="mv">L1无价值</span></div>
+</div>
+<div class="cmp-arrow">→</div>
+<div class="gc cmp-c after">
+<h4>🟢 连锁组运营期（34天）</h4>
+<div class="mr"><span class="ml">GMV</span><span class="mv">8.5万</span></div>
+<div class="mr"><span class="ml">采购模式</span><span class="mv">每日下单</span></div>
+<div class="mr"><span class="ml">核心品类</span><span class="mv">蔬菜净菜</span></div>
+<div class="mr"><span class="ml">客户定位</span><span class="mv">日常供应商</span></div>
+</div>
+</div>
+
+<div id="chart-case1" class="chart-box"></div>
+
+<div class="ib data">
+<div class="ic">📊</div>
+<div class="tx"><strong>关键数据：</strong>科兴店单店贡献<strong>3.6万</strong>，32天几乎每日下单。美团从偶发采购渠道变为日常食材供应商。当前月销稳定<strong>8-10万</strong>，且预计持续增长。</div>
+</div>
+
+<h3 style="margin:32px 0 16px;font-size:18px">关键里程碑时间线</h3>
+<div class="tl">
+<div class="tl-i pb"><div class="date">地推运营期</div><h4>地推承接，34天GMV仅1.1万</h4><p>按To C模式单店作业，客户偶发采购，无稳定合作关系，系统判定为L1客户</p></div>
+<div class="tl-i pt"><div class="date">转折点</div><h4>连锁组接手，切换To B运营模式</h4><p>以品牌总部为切入点，整体规划采购方案，重新定位品类结构（蔬菜净菜为主）</p></div>
+<div class="tl-i pa"><div class="date">连锁组运营34天</div><h4>GMV飙升至8.5万，增长648%</h4><p>订单量增长913%，科兴店单店贡献3.6万（32天几乎每日下单），美团成为日常供应商</p></div>
+<div class="tl-i pa"><div class="date">当前状态</div><h4>月销稳定8-10万，持续增长</h4><p>从"无价值客户"变为高产出、稳定盈利客户，完成从偶发采购到日常供应商的转变</p></div>
+</div>
+
+<div class="price-box">
+<h4>💰 大米份额——价格卡点待突破</h4>
+<p>郑千白切拥有<strong style="color:var(--gold)">30万/年</strong>的大米采购份额。连锁组有能力承接，但当前我们比竞品<strong style="color:var(--red-l)">贵10%</strong>，客户因此不支持。若价格有竞争力，可<strong style="color:var(--cyan)">全量转入</strong>——这是30万纯增量的确定性机会。</p>
+</div>
+
+<div class="ib conclusion" style="margin-top:24px">
+<div class="ic">✅</div>
+<div class="tx"><strong>案例结论：</strong>公司系统判定的"无价值客户"，通过连锁组专业运营可以变成高产出、稳定盈利客户。核心差异不在客户质量，在于运营模式——To B专业运营 vs To C粗放作业。</div>
+</div>
+</div>
+</section>
+
+<!-- 5. CASE 2: 山外公 -->
+<section id="case2">
+<div class="ctn">
+<div class="sn">SECTION 04</div>
+<h2 class="st">案例二：山外公——战略级KA客户</h2>
+<p class="sd">体量是郑千白切的20倍，不能用卖菜思维做KA项目</p>
+<div style="display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap">
+<span style="padding:4px 14px;border-radius:100px;font-size:12px;font-weight:600;background:rgba(192,57,43,0.15);color:var(--red-l)">⚠️ 存在重大风险</span>
+<span style="padding:4px 14px;border-radius:100px;font-size:12px;font-weight:600;background:rgba(201,168,76,0.15);color:var(--gold)">体量20倍</span>
+<span style="padding:4px 14px;border-radius:100px;font-size:12px;font-weight:600;background:rgba(0,212,170,0.15);color:var(--cyan)">50-60家新店即将开业</span>
+</div>
+
+<div id="chart-scale" class="chart-box"></div>
+
+<div class="ib data">
+<div class="ic">📊</div>
+<div class="tx"><strong>客户画像：</strong>山外公是外卖和SaaS平台的正餐品牌，<strong>江西菜标杆</strong>，增长迅猛。体量是郑千白切的<strong>20倍</strong>。下月即将新开<strong>50-60家</strong>门店。品牌方明确希望以To B思维推进合作。</div>
+</div>
+
+<div class="ib analysis">
+<div class="ic">💡</div>
+<div class="tx"><strong>核心矛盾：</strong>山外公目前只做到<strong>30%市场份额</strong>，<strong>70%拿不下来</strong>。原因不是能力问题，而是机制问题——地推双周切分持续干扰，客户体验极差，合作粘性无法建立。品牌方因To C作业模式不愿接受地推统管。</div>
+</div>
+
+<div id="chart-share" class="chart-box" style="height:320px"></div>
+
+<div class="ib warning">
+<div class="ic">🚨</div>
+<div class="tx"><strong>信任基础：</strong>为争取山外公合作，城市经理动用个人资源帮客户赚了<strong>20多万</strong>，并提供龙虾培训赋能。客户才松口不用美菜用美团。这种深度To B信任关系，一旦被地推切分打断，<strong>不可逆</strong>。</div>
+</div>
+
+<div class="opp">
+<h3>🔥 紧迫机会窗口</h3>
+<div class="big">50-60<span style="font-size:24px">家新店</span></div>
+<p>下月即将集中开业。如果继续被地推干扰，这些新店的食材供应份额将大量流向竞品。<br><strong style="color:var(--gold)">窗口期稍纵即逝，保护机制刻不容缓。</strong></p>
+</div>
+
+<div class="ib conclusion">
+<div class="ic">✅</div>
+<div class="tx"><strong>案例结论：</strong>山外公是战略级大客户，必须以To B思维进行KA项目管理。当前机制持续损害客户关系和份额拓展，50-60家新店是必须抓住的爆发窗口。如不建立保护机制，将造成巨额GMV损失。</div>
+</div>
+</div>
+</section>
+
+<!-- 6. LOSS -->
+<section id="loss">
+<div class="ctn">
+<div class="sn">SECTION 05</div>
+<h2 class="st">损失测算：不保护的代价</h2>
+<p class="sd">基于两个案例的实际数据，推算未来6个月的潜在GMV损失</p>
+
+<div class="lt-w">
+<table class="lt">
+<thead><tr><th>客户</th><th>损失场景</th><th>月损失GMV</th><th>6个月累计</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>郑千白切</td><td>地推切分导致回落至偶发采购</td><td>~7万</td><td>~42万</td><td>月销从8-10万回落至1-2万（参照地推期表现）</td></tr>
+<tr><td>郑千白切</td><td>大米份额流失（价格+机制双重影响）</td><td>~2.5万</td><td>~15万</td><td>30万/年大米份额无法承接</td></tr>
+<tr><td>山外公（现有店）</td><td>70%份额持续无法突破</td><td>~14万</td><td>~84万</td><td>按郑千白切月销10万×20倍×70%估算现有店月损</td></tr>
+<tr><td>山外公（新店）</td><td>50-60家新店份额流向竞品</td><td>~30万</td><td>~180万</td><td>新店月均GMV按现有门店参考，首月起步×逐步爬坡</td></tr>
+<tr class="total"><td colspan="2">合计潜在损失</td><td>~53.5万/月</td><td colspan="2">~321万（6个月）</td></tr>
+</tbody>
+</table>
+</div>
+
+<div id="chart-loss" class="chart-box"></div>
+
+<div class="ib data">
+<div class="ic">📊</div>
+<div class="tx"><strong>测算依据：</strong>郑千白切月销数据（地推期1.1万/34天 vs 连锁组期8.5万/34天），山外公体量为郑千白切20倍，当前份额30%，新店50-60家/月。所有数据来自实际经营。</div>
+</div>
+
+<div class="ib warning">
+<div class="ic">🚨</div>
+<div class="tx"><strong>隐性损失：</strong>以上仅计算直接GMV损失。品牌方信任崩塌、客户转向美菜等竞品的<strong>战略损失不可量化</strong>。一旦山外公全面转投竞品，将形成标杆效应，影响华南整体连锁客户拓展。</div>
+</div>
+
+<div class="ib conclusion">
+<div class="ic">✅</div>
+<div class="tx"><strong>结论：</strong>不建立保护机制，保守估算未来6个月将造成<strong style="color:var(--red-l)">超过300万GMV</strong>的直接损失，且损失将随山外公新店扩张持续放大。保护成本远低于流失代价。</div>
+</div>
+</div>
+</section>
+
+<!-- 7. SOLUTION -->
+<section id="solution">
+<div class="ctn">
+<div class="sn">SECTION 06</div>
+<h2 class="st">建议方案：四大保护机制</h2>
+<p class="sd">建立制度化的连锁客户资源保护体系</p>
+
+<div class="sol-g">
+<div class="gc sol-c">
+<div class="sol-n">1</div>
+<h3>客户锁定期机制</h3>
+<p>连锁组正式承接的品牌客户，设定<strong style="color:var(--gold)">180天保护锁定期</strong>，期间所有门店归属连锁组统一管理，不参与双周切分。</p>
+<ul>
+<li>锁定期内地推不得切分门店</li>
+<li>锁定期满后由管理层评估续期</li>
+<li>新开门店自动纳入锁定范围</li>
+</ul>
+</div>
+<div class="gc sol-c">
+<div class="sol-n">2</div>
+<h3>KA专属权保护</h3>
+<p>年框金额超过一定阈值的连锁客户，授予连锁组<strong style="color:var(--cyan)">KA专属运营权</strong>，品牌总部及所有门店由连锁组统一对接。</p>
+<ul>
+<li>建立KA客户白名单</li>
+<li>品牌方可指定To B对接模式</li>
+<li>专属权受公司级保护</li>
+</ul>
+</div>
+<div class="gc sol-c">
+<div class="sol-n">3</div>
+<h3>规范化交接规则</h3>
+<p>当客户归属发生调整时，必须执行<strong style="color:var(--gold)">标准化交接流程</strong>，确保客户体验不中断，业务数据完整移交。</p>
+<ul>
+<li>交接前双方签署《客户交接确认书》</li>
+<li>设定30天过渡期，双方协同</li>
+<li>交接后60天内不得再次切分</li>
+</ul>
+</div>
+<div class="gc sol-c">
+<div class="sol-n">4</div>
+<h3>KPI考核调整</h3>
+<p>连锁组KPI增加<strong style="color:var(--cyan)">客户深度运营指标</strong>，取代单纯的新客数量考核，引导长期价值导向。</p>
+<ul>
+<li>增加客户留存率、复购频次指标</li>
+<li>增加品牌份额渗透率指标</li>
+<li>地推KPI排除锁定客户门店</li>
+</ul>
+</div>
+</div>
+
+<div class="ib conclusion" style="margin-top:32px">
+<div class="ic">✅</div>
+<div class="tx"><strong>方案核心逻辑：</strong>锁定期解决"短期切分"问题，专属权解决"To B vs To C"冲突，交接规则解决"客户体验断裂"痛点，KPI调整解决"激励错位"根因。四项机制形成完整保护闭环。</div>
+</div>
+</div>
+</section>
+
+<!-- 8. ROI -->
+<section id="roi">
+<div class="ctn">
+<div class="sn">SECTION 07</div>
+<h2 class="st">投资回报：保护 vs 不保护</h2>
+<p class="sd">实施保护机制的预期收益对比</p>
+
+<div class="roi-g">
+<div class="gc roi-c cur">
+<h4>❌ 维持现状（不保护）</h4>
+<div class="rv">-321万</div>
+<div class="rd">6个月预计GMV损失<br>山外公新店份额流失<br>郑千白切可能回落<br>品牌方信任崩塌</div>
+</div>
+<div class="gc roi-c fut">
+<h4>✅ 实施保护机制</h4>
+<div class="rv">+500万+</div>
+<div class="rd">6个月预计GMV增量<br>山外公70%份额逐步突破<br>新店食材供应全量承接<br>郑千白切30万大米增量</div>
+</div>
+</div>
+
+<div id="chart-roi" class="chart-box"></div>
+
+<div class="ib data">
+<div class="ic">📊</div>
+<div class="tx"><strong>收益测算逻辑：</strong>山外公70%未拿份额×体量20倍+50-60家新店全量承接+郑千白切30万大米份额+品牌深度运营带来的品类扩展。保护机制的投入仅为管理机制调整，几乎无额外成本，<strong>ROI极高</strong>。</div>
+</div>
+
+<div class="ib conclusion">
+<div class="ic">✅</div>
+<div class="tx"><strong>结论：</strong>保护机制实施后预计6个月增量GMV<strong style="color:var(--cyan)">超500万</strong>，对比不保护的<strong style="color:var(--red-l)">-321万损失</strong>，差值超过<strong>800万</strong>。这是一笔无需额外资金投入、仅靠机制优化即可实现的巨大收益。</div>
+</div>
+</div>
+</section>
+
+<!-- 9. ROADMAP -->
+<section id="roadmap">
+<div class="ctn">
+<div class="sn">SECTION 08</div>
+<h2 class="st">实施路径：三阶段推进</h2>
+<p class="sd">先试点验证，再快速推广</p>
+
+<div class="rm-g">
+<div class="gc rm-p p1">
+<div class="rm-tag">第一阶段 · 紧急试点</div>
+<h4>山外公+郑千白切试点</h4>
+<p>立即对山外公和郑千白切实施保护锁定期（180天），冻结双周切分。连锁组全力推进山外公新店承接和份额突破。同步推进郑千白切大米份额的价格方案。</p>
+<div class="time">⏰ 立即启动，2周内完成</div>
+</div>
+<div class="gc rm-p p2">
+<div class="rm-tag">第二阶段 · 机制建设</div>
+<h4>制度化保护体系</h4>
+<p>基于试点成果，制定《连锁客户保护管理办法》，明确锁定期、专属权、交接规则和KPI调整的标准化流程。建立KA客户白名单，同步调整地推KPI排除规则。</p>
+<div class="time">⏰ 第3-8周</div>
+</div>
+<div class="gc rm-p p3">
+<div class="rm-tag">第三阶段 · 全面推广</div>
+<h4>华南区全面覆盖</h4>
+<p>将保护机制推广至华南区所有连锁客户，建立常态化管理体系。定期复盘保护客户的GMV产出和客户满意度数据，持续优化机制。沉淀为全国可复制的最佳实践。</p>
+<div class="time">⏰ 第9-12周</div>
+</div>
+</div>
+
+<div class="ib conclusion" style="margin-top:24px">
+<div class="ic">✅</div>
+<div class="tx"><strong>关键时间节点：</strong>山外公50-60家新店下月开业，保护机制<strong style="color:var(--red-l)">必须在2周内</strong>对山外公试点落地，否则新店窗口期将错失。</div>
+</div>
+</div>
+</section>
+
+<!-- 10. CTA -->
+<section class="cta" id="cta">
+<div class="ctn">
+<div class="sn">SECTION 09</div>
+<h2 class="hl">保护连锁客户，就是保护公司战略资产</h2>
+<p class="sub">连锁客户是快驴B2B业务的核心壁垒。保护机制不是特权，而是让专业的人用专业的方式做专业的事。每一天的延迟，都是确定性的损失。</p>
+<div class="cta-box">
+<div>🎯 决策建议</div>
+<div style="margin-top:8px;font-size:14px;color:var(--t2);font-weight:400">立即启动山外公+郑千白切试点保护 → 2周内落地锁定机制<br>→ 8周内完成制度化建设 → 12周内华南全面推广</div>
+</div>
+</div>
+</section>
+
+<!-- Footer -->
+<div class="footer">
+<div class="ctn">
+快驴华南连锁组 · 2026年4月 · 内部决策参考文档 · 数据来源：实际经营数据
+</div>
+</div>
+
+<script>
+(function(){
+  /* ===== Scroll reveal ===== */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('visible'); }
+    });
+  },{threshold:0.1});
+  document.querySelectorAll('section').forEach(function(s){ io.observe(s); });
+
+  /* ===== Counter animation ===== */
+  var counterIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting && !e.target.dataset.done){
+        e.target.dataset.done = '1';
+        animateCounter(e.target);
+      }
+    });
+  },{threshold:0.5});
+  document.querySelectorAll('.counter-val').forEach(function(el){ counterIO.observe(el); });
+
+  function animateCounter(el){
+    var target = parseInt(el.dataset.target,10);
+    var suffix = el.dataset.suffix || '';
+    var duration = 1500;
+    var start = performance.now();
+    function tick(now){
+      var p = Math.min((now - start)/duration, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var current = Math.round(target * eased);
+      el.textContent = current + suffix;
+      if(p < 1){ requestAnimationFrame(tick); }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  /* ===== Nav active state ===== */
+  var sections = document.querySelectorAll('section[id]');
+  var navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', function(){
+    var scrollY = window.scrollY + 100;
+    sections.forEach(function(sec){
+      var top = sec.offsetTop;
+      var h = sec.offsetHeight;
+      var id = sec.getAttribute('id');
+      if(scrollY >= top && scrollY < top + h){
+        navLinks.forEach(function(a){
+          a.classList.remove('active');
+          if(a.getAttribute('href') === '#' + id){ a.classList.add('active'); }
+        });
+      }
+    });
+  });
+
+  /* ===== ECharts: wait for load ===== */
+  function initCharts(){
+    /* -- Diagnosis: radar-like bar chart -- */
+    var d1 = document.getElementById('chart-diagnosis');
+    if(d1){
+      var c1 = echarts.init(d1);
+      c1.setOption({
+        backgroundColor:'transparent',
+        title:{text:'三大痛点影响程度评估',textStyle:{color:'#F0F0F0',fontSize:16},left:'center',top:10},
+        tooltip:{trigger:'axis',backgroundColor:'rgba(15,23,36,0.95)',borderColor:'rgba(201,168,76,0.3)',textStyle:{color:'#F0F0F0'}},
+        grid:{left:120,right:40,top:60,bottom:40},
+        xAxis:{type:'value',max:100,axisLabel:{color:'#6B7B8D',formatter:'{value}%'},splitLine:{lineStyle:{color:'rgba(255,255,255,0.05)'}},axisLine:{show:false}},
+        yAxis:{type:'category',data:['客户分级失真','To C vs To B冲突','双周切分机制'],axisLabel:{color:'#A0AEC0',fontSize:13},axisLine:{show:false},axisTick:{show:false}},
+        series:[{type:'bar',barWidth:28,data:[
+          {value:75,itemStyle:{color:'#C9A84C'}},
+          {value:85,itemStyle:{color:'#E8D48B'}},
+          {value:95,itemStyle:{color:'#C0392B'}}
+        ],label:{show:true,position:'right',formatter:'{c}%',color:'#F0F0F0',fontSize:13}}]
+      });
+    }
+
+    /* -- Case1: growth comparison -- */
+    var d2 = document.getElementById('chart-case1');
+    if(d2){
+      var c2 = echarts.init(d2);
+      c2.setOption({
+        backgroundColor:'transparent',
+        title:{text:'郑千白切：地推期 vs 连锁组运营期（34天对比）',textStyle:{color:'#F0F0F0',fontSize:15},left:'center',top:10},
+        tooltip:{trigger:'axis',backgroundColor:'rgba(15,23,36,0.95)',borderColor:'rgba(201,168,76,0.3)',textStyle:{color:'#F0F0F0'}},
+        legend:{data:['地推期','连锁组期'],textStyle:{color:'#A0AEC0'},top:40},
+        grid:{left:60,right:40,top:80,bottom:60},
+        xAxis:{type:'category',data:['GMV(万)','日均GMV(元)','订单量(相对)','下单天数(天)','品类数'],axisLabel:{color:'#A0AEC0',fontSize:12},axisLine:{lineStyle:{color:'rgba(255,255,255,0.1)'}},axisTick:{show:false}},
+        yAxis:{type:'value',axisLabel:{color:'#6B7B8D'},splitLine:{lineStyle:{color:'rgba(255,255,255,0.05)'}},axisLine:{show:false}},
+        series:[
+          {name:'地推期',type:'bar',barGap:'20%',data:[1.1,324,1,10,2],itemStyle:{color:'rgba(107,123,141,0.6)',borderRadius:[4,4,0,0]},label:{show:true,position:'top',color:'#6B7B8D',fontSize:11}},
+          {name:'连锁组期',type:'bar',data:[8.5,2500,10.1,30,6],itemStyle:{color:'#00D4AA',borderRadius:[4,4,0,0]},label:{show:true,position:'top',color:'#00D4AA',fontSize:11}}
+        ]
+      });
+    }
+
+    /* -- Case2: scale comparison -- */
+    var d3 = document.getElementById('chart-scale');
+    if(d3){
+      var c3 = echarts.init(d3);
+      c3.setOption({
+        backgroundColor:'transparent',
+        title:{text:'客户体量对比：山外公 vs 郑千白切',textStyle:{color:'#F0F0F0',fontSize:15},left:'center',top:10},
+        tooltip:{trigger:'axis',backgroundColor:'rgba(15,23,36,0.95)',borderColor:'rgba(201,168,76,0.3)',textStyle:{color:'#F0F0F0'}},
+        grid:{left:80,right:40,top:60,bottom:60},
+        xAxis:{type:'category',data:['郑千白切','山外公'],axisLabel:{color:'#A0AEC0',fontSize:14},axisLine:{lineStyle:{color:'rgba(255,255,255,0.1)'}},axisTick:{show:false}},
+        yAxis:{type:'value',name:'相对体量',nameTextStyle:{color:'#6B7B8D'},axisLabel:{color:'#6B7B8D'},splitLine:{lineStyle:{color:'rgba(255,255,255,0.05)'}},axisLine:{show:false}},
+        series:[{type:'bar',barWidth:80,data:[
+          {value:1,itemStyle:{color:'#C9A84C',borderRadius:[8,8,0,0]}},
+          {value:20,itemStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#00D4AA'},{offset:1,color:'#C9A84C'}]),borderRadius:[8,8,0,0]}}
+        ],label:{show:true,position:'top',color:'#F0F0F0',fontSize:16,fontWeight:'bold',formatter:function(p){return p.value===1?'1x':'20x';}}}]
+      });
+    }
+
+    /* -- Share pie -- */
+    var d4 = document.getElementById('chart-share');
+    if(d4){
+      var c4 = echarts.init(d4);
+      c4.setOption({
+        backgroundColor:'transparent',
+        title:{text:'山外公市场份额占比',textStyle:{color:'#F0F0F0',fontSize:15},left:'center',top:10},
+        tooltip:{trigger:'item',backgroundColor:'rgba(15,23,36,0.95)',borderColor:'rgba(201,168,76,0.3)',textStyle:{color:'#F0F0F0'}},
+        series:[{type:'pie',radius:['45%','72%'],center:['50%','55%'],avoidLabelOverlap:true,
+          itemStyle:{borderRadius:8,borderColor:'#050A18',borderWidth:3},
+          label:{color:'#F0F0F0',fontSize:14,fontWeight:'bold'},
+          data:[
+            {value:30,name:'已拿份额 30%',itemStyle:{color:'#00D4AA'}},
+            {value:70,name:'待拿份额 70%',itemStyle:{color:'rgba(192,57,43,0.7)'}}
+          ]
+        }]
+      });
+    }
+
+    /* -- Loss bar -- */
+    var d5 = document.getElementById('chart-loss');
+    if(d5){
+      var c5 = echarts.init(d5);
+      c5.setOption({
+        backgroundColor:'transparent',
+        title:{text:'未来6个月潜在GMV损失测算（万元）',textStyle:{color:'#F0F0F0',fontSize:15},left:'center',top:10},
+        tooltip:{trigger:'axis',backgroundColor:'rgba(15,23,36,0.95)',borderColor:'rgba(201,168,76,0.3)',textStyle:{color:'#F0F0F0'},formatter:function(p){return p[0].name+'<br/>损失: '+p[0].value+'万元';}},
+        grid:{left:60,right:40,top:60,bottom:80},
+        xAxis:{type:'category',data:['郑千白切\nGMV回落','郑千白切\n大米流失','山外公\n现有店份额','山外公\n新店流失'],axisLabel:{color:'#A0AEC0',fontSize:12,interval:0},axisLine:{lineStyle:{color:'rgba(255,255,255,0.1)'}},axisTick:{show:false}},
+        yAxis:{type:'value',name:'万元',nameTextStyle:{color:'#6B7B8D'},axisLabel:{color:'#6B7B8D'},splitLine:{lineStyle:{color:'rgba(255,255,255,0.05)'}},axisLine:{show:false}},
+        series:[{type:'bar',barWidth:50,data:[
+          {value:42,itemStyle:{color:'#C0392B',borderRadius:[6,6,0,0]}},
+          {value:15,itemStyle:{color:'#E74C3C',borderRadius:[6,6,0,0]}},
+          {value:84,itemStyle:{color:'#C0392B',borderRadius:[6,6,0,0]}},
+          {value:180,itemStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#E74C3C'},{offset:1,color:'#C0392B'}]),borderRadius:[6,6,0,0]}}
+        ],label:{show:true,position:'top',color:'#E74C3C',fontSize:13,fontWeight:'bold',formatter:'{c}万'}}]
+      });
+    }
+
+    /* -- ROI comparison -- */
+    var d6 = document.getElementById('chart-roi');
+    if(d6){
+      var c6 = echarts.init(d6);
+      c6.setOption({
+        backgroundColor:'transparent',
+        title:{text:'6个月ROI对比：保护 vs 不保护',textStyle:{color:'#F0F0F0',fontSize:15},left:'center',top:10},
+        tooltip:{trigger:'axis',backgroundColor:'rgba(15,23,36,0.95)',borderColor:'rgba(201,168,76,0.3)',textStyle:{color:'#F0F0F0'},formatter:function(p){return p[0].name+'<br/>'+p[0].value+'万元';}},
+        grid:{left:80,right:40,top:60,bottom:60},
+        xAxis:{type:'category',data:['不保护（损失）','实施保护（增量）'],axisLabel:{color:'#A0AEC0',fontSize:13},axisLine:{lineStyle:{color:'rgba(255,255,255,0.1)'}},axisTick:{show:false}},
+        yAxis:{type:'value',name:'万元',nameTextStyle:{color:'#6B7B8D'},axisLabel:{color:'#6B7B8D'},splitLine:{lineStyle:{color:'rgba(255,255,255,0.05)'}},axisLine:{show:false}},
+        series:[{type:'bar',barWidth:100,data:[
+          {value:-321,itemStyle:{color:new echarts.graphic.LinearGradient(0,1,0,0,[{offset:0,color:'#C0392B'},{offset:1,color:'#E74C3C'}]),borderRadius:[6,6,0,0]}},
+          {value:500,itemStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#00D4AA'},{offset:1,color:'#C9A84C'}]),borderRadius:[6,6,0,0]}}
+        ],label:{show:true,position:function(p){return p[1]<0?'bottom':'top';},color:'#F0F0F0',fontSize:16,fontWeight:'bold',formatter:function(p){return (p.value>0?'+':'')+p.value+'万';}}}]
+      });
+    }
+
+    /* -- Resize handler -- */
+    window.addEventListener('resize',function(){
+      [c1,c2,c3,c4,c5,c6].forEach(function(c){if(c){c.resize();}});
+    });
+  }
+
+  /* Init when ECharts ready */
+  if(typeof echarts !== 'undefined'){
+    initCharts();
+  } else {
+    window.addEventListener('load', initCharts);
+  }
+})();
+</script>
+</body>
+</html>
