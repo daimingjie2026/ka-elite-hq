@@ -1060,7 +1060,7 @@ tr:hover td{background:rgba(123,94,167,.06)}
           e.target.classList.add('vis');
         }
       });
-    },{threshold:0.08});
+    },{threshold:0.01});
     document.querySelectorAll('section').forEach(function(s){io.observe(s);});
 
     // fade-in-stagger
@@ -1068,12 +1068,17 @@ tr:hover td{background:rgba(123,94,167,.06)}
       entries.forEach(function(e){
         if(e.isIntersecting) e.target.classList.add('vis');
       });
-    },{threshold:0.1});
+    },{threshold:0.01});
     document.querySelectorAll('.fis').forEach(function(el){fio.observe(el);});
   } else {
     document.querySelectorAll('section').forEach(function(s){s.classList.add('vis');});
     document.querySelectorAll('.fis').forEach(function(el){el.classList.add('vis');});
   }
+  // Fallback: ensure all sections become visible after 2s (prevents blank gaps)
+  setTimeout(function(){
+    document.querySelectorAll('section').forEach(function(s){s.classList.add('vis');});
+    document.querySelectorAll('.fis').forEach(function(el){el.classList.add('vis');});
+  },2000);
 
   // Counter animation
   var counted=false;
