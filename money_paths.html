@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>赚钱路径落地版 3.0 · 视觉盛宴版</title>
+<title>星火燎原 · 从管理者到创造者的跃迁蓝图</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -15,7 +15,7 @@
   --text:#C8D6E5;--text-dim:#6B7A99;--text-bright:#F0F4FF;
   --font-h1:clamp(36px,5vw,56px);--font-h2:clamp(28px,4vw,36px);
   --font-h3:clamp(20px,3vw,24px);--font-body:clamp(15px,1.8vw,18px);
-  --lh:1.85;--sp:clamp(50px,8vw,80px);
+  --lh:1.85;--sp:clamp(30px,5vw,60px);
 }
 html{scroll-behavior:smooth;background:var(--bg)}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
@@ -174,8 +174,37 @@ tr:hover td{background:rgba(74,108,247,.05)}
 .hero-orbit::before{content:'';position:absolute;top:-3px;left:50%;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:var(--cyan-glow);box-shadow:0 0 10px var(--cyan-glow)}
 .hero-orbit2{position:absolute;top:50%;left:50%;width:220px;height:220px;margin:-110px 0 0 -110px;border:1px dashed rgba(232,197,71,.06);border-radius:50%;animation:orbit-spin 20s linear infinite reverse;pointer-events:none}
 @keyframes orbit-spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
-.hero-glow-line{width:200px;height:1px;margin:20px auto 0;background:linear-gradient(90deg,transparent,var(--cyan-glow),var(--gold),var(--cyan-glow),transparent);animation:glow-pulse 3s ease-in-out infinite}
+.hero-glow-line{width:120px;height:2px;margin:16px auto;background:linear-gradient(90deg,transparent,var(--cyan-glow),var(--gold),var(--cyan-glow),transparent);border-radius:2px;box-shadow:0 0 15px rgba(0,210,255,0.3);animation:glow-pulse 3s ease-in-out infinite}
 @keyframes glow-pulse{0%,100%{opacity:.4;transform:scaleX(.8)}50%{opacity:1;transform:scaleX(1)}}
+/* === v5.0 Star Fire Additions === */
+.hero-sub{font-size:clamp(16px,2.5vw,22px);color:var(--cyan-glow);letter-spacing:6px;margin-top:12px;font-weight:300;text-shadow:0 0 20px rgba(0,210,255,0.3)}
+.hero-ver{font-size:14px;color:var(--text-dim);letter-spacing:3px;margin-top:8px}
+/* Scroll hint */
+.scroll-hint{margin-top:40px;text-align:center;animation:bounce-down 2s ease-in-out infinite}
+.scroll-arrow{font-size:24px;color:var(--cyan-glow);opacity:0.6}
+@keyframes bounce-down{0%,100%{transform:translateY(0);opacity:0.6}50%{transform:translateY(12px);opacity:1}}
+/* Hero particle pseudo-effect */
+section[data-ch="0"] h1::before{content:'';position:absolute;top:50%;left:50%;width:400px;height:400px;margin:-200px 0 0 -200px;border-radius:50%;background:radial-gradient(circle,rgba(232,197,71,0.06) 0%,rgba(0,210,255,0.04) 30%,transparent 70%);animation:hero-particle-pulse 5s ease-in-out infinite;pointer-events:none;z-index:-1}
+@keyframes hero-particle-pulse{0%,100%{transform:scale(0.8);opacity:0.3}50%{transform:scale(1.3);opacity:0.7}}
+/* Section color rhythm */
+section[data-ch="1"],section[data-ch="2"]{background:linear-gradient(180deg,transparent,rgba(10,30,80,0.15) 50%,transparent)}
+section[data-ch="2b"],section[data-ch="3"]{background:linear-gradient(180deg,transparent,rgba(60,20,100,0.1) 50%,transparent)}
+section[data-ch="4"],section[data-ch="5"]{background:linear-gradient(180deg,transparent,rgba(0,80,120,0.08) 50%,transparent)}
+section[data-ch="6"],section[data-ch="7"]{background:linear-gradient(180deg,transparent,rgba(10,30,80,0.15) 50%,transparent)}
+/* Table upgrades */
+.tw table tr:first-child th,.tw table thead th{background:linear-gradient(135deg,rgba(74,108,247,0.25),rgba(0,210,255,0.15))!important;border-bottom:2px solid rgba(0,210,255,0.3);text-shadow:0 0 8px rgba(0,210,255,0.3)}
+.tw table tr:nth-child(even){background:rgba(255,255,255,0.02)}
+.tw table tr:hover td{background:rgba(74,108,247,0.08);transition:background 0.3s ease}
+.tw table tr:last-child td{border-top:1px solid rgba(232,197,71,0.2)}
+/* Dashboard card pulse glow */
+.db>div,.dbi{position:relative;overflow:hidden}
+.db>div::before,.dbi::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(0,210,255,0.08) 0%,transparent 60%);animation:card-pulse 4s ease-in-out infinite;pointer-events:none}
+@keyframes card-pulse{0%,100%{transform:scale(0.8);opacity:0.3}50%{transform:scale(1.2);opacity:0.8}}
+.dn{text-shadow:0 0 30px rgba(0,210,255,0.4),0 0 60px rgba(74,108,247,0.2)}
+/* Reduce divider spacing */
+.dv{margin:30px 0;padding:10px 0}
+/* Cover quote tighten */
+section[data-ch="0"] .pq{margin-top:24px!important}
 @media(max-width:600px){
   .ctn{padding:0 16px}
   .cd,.di,.sp{padding:20px}
@@ -226,11 +255,15 @@ tr:hover td{background:rgba(74,108,247,.05)}
 <section data-ch="0" style="padding-top:100px;padding-bottom:40px;text-align:center;position:relative">
 <div class="hero-orbit"></div>
 <div class="hero-orbit2"></div>
-<h1>赚钱路径落地版 2.0</h1>
+<h1>星火燎原</h1>
+<p class="hero-sub">从管理者到创造者的跃迁蓝图</p>
+<p class="hero-ver">3.0 落地版 · 戴明杰专属</p>
 <div class="hero-glow-line"></div>
-<p style="margin-top:16px;letter-spacing:4px;color:var(--cyan-glow);font-size:14px">戴明杰专属行动手册</p>
-<div class="pq" style="text-align:left;margin-top:40px">
+<div class="pq" style="text-align:left;margin-top:24px">
 写给一个带着9人团队、每天忙到飞起、但心里清楚"光靠工资不够"的销售管理者。<br>不讲梦想，只讲这个月能做什么。
+</div>
+<div class="scroll-hint">
+  <span class="scroll-arrow">↓</span>
 </div>
 </section>
 
@@ -1315,7 +1348,7 @@ tr:hover td{background:rgba(74,108,247,.05)}
 
 <section data-ch="9" style="padding-bottom:60px">
 <p style="text-align:center;color:var(--text-dim);font-size:calc(var(--font-body) - 2px)"><em>本报告基于戴明杰的真实背景和约束条件撰写，数据为保守估算。实际结果取决于执行力度和市场反馈。</em></p>
-<p style="text-align:center;color:var(--text-dim);font-size:calc(var(--font-body) - 2px)"><em>版本：3.0 落地版 · 视觉盛宴版 | 日期：2026年4月28日</em></p>
+<p style="text-align:center;color:var(--text-dim);font-size:calc(var(--font-body) - 2px)"><em>版本：3.0 星火燎原版 | 日期：2026年4月28日</em></p>
 <div class="sig">
 <div class="sig-n">Nova · 锦鲤仙侍</div>
 <div class="sig-s">⚡ 专注销售，AI为盾</div>
