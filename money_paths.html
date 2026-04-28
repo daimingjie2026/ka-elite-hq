@@ -53,7 +53,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hira
 .grid-ov{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-5;pointer-events:none;
   background-image:radial-gradient(circle,rgba(100,130,255,.08) 1px,transparent 1px);
   background-size:80px 80px}
-.ctn{max-width:820px;margin:0 auto;padding:0 24px}
+.ctn{max-width:1200px;margin:0 auto;padding:0 clamp(24px,5vw,80px)}
+/* 文字段落保持舒适阅读宽度 */
+.ctn>section>p,.ctn>section>ol,.ctn>section>ul,.ctn>section>.pq{max-width:780px}
+/* 表格、卡片、数据面板铺满 */
+.ctn>section>.tw,.ctn>section>.cd,.ctn>section>.di,.ctn>section>.db,.ctn>section>.sp,.ctn>section>.pf{max-width:100%}
+/* HERO全屏改造 */
+section[data-ch="0"]{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding-top:0!important;padding-bottom:0!important}
+/* 经典语录样式 */
+.wisdom-quote{display:flex;align-items:flex-start;gap:16px;margin:-8px 0 32px 0;padding:20px 28px;background:linear-gradient(135deg,rgba(232,197,71,0.06),rgba(0,210,255,0.04));border-left:3px solid rgba(232,197,71,0.4);border-radius:0 12px 12px 0;max-width:780px}
+.wisdom-icon{font-size:24px;flex-shrink:0;margin-top:2px}
+.wisdom-text{font-size:calc(var(--font-body) + 1px);font-style:italic;color:var(--gold-light);line-height:1.8;margin:0}
+.wisdom-source{display:block;font-size:13px;color:var(--text-dim);margin-top:8px;font-style:normal;letter-spacing:1px}
 section{padding:var(--sp) 0;opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
 section.vis{opacity:1;transform:translateY(0)}
 h1{font-size:var(--font-h1);font-weight:800;line-height:1.2;
@@ -228,6 +239,13 @@ tr:hover td{background:rgba(74,108,247,.05)}
 <!-- CH1 -->
 <section data-ch="1">
 <h2>第一章：真话时间——你当前的真实处境</h2>
+<div class="wisdom-quote">
+  <span class="wisdom-icon">📜</span>
+  <blockquote>
+    <p class="wisdom-text">「知己知彼，百战不殆；不知彼而知己，一胜一负；不知彼，不知己，每战必殆。」</p>
+    <cite class="wisdom-source">—— 《孙子兵法·谋攻篇》</cite>
+  </blockquote>
+</div>
 <h3>月收入基线</h3>
 <p>先把底牌摊开。</p>
 <p>美团快驴华南连锁组城市经理，KA精英组，带9人BD团队。按美团销售管理序列合理估算：</p>
@@ -317,6 +335,13 @@ tr:hover td{background:rgba(74,108,247,.05)}
 <!-- CH2 -->
 <section data-ch="2">
 <h2>第二章：砍到骨头——只留3+2条路径</h2>
+<div class="wisdom-quote">
+  <span class="wisdom-icon">📜</span>
+  <blockquote>
+    <p class="wisdom-text">「以正合，以奇胜。凡战者，以正合，以奇胜。故善出奇者，无穷如天地，不竭如江河。」</p>
+    <cite class="wisdom-source">—— 《孙子兵法·兵势篇》</cite>
+  </blockquote>
+</div>
 <h3>被砍掉的6条路径</h3>
 <p>假设你之前列了11条可能的赚钱路径，我帮你砍掉6条：</p>
 <div class="tw"><table>
@@ -379,6 +404,13 @@ tr:hover td{background:rgba(74,108,247,.05)}
 <!-- CH2b: 竞品分析 -->
 <section data-ch="2b">
 <h2>第二章补充：赛道扫描——谁已经在做了？</h2>
+<div class="wisdom-quote">
+  <span class="wisdom-icon">📜</span>
+  <blockquote>
+    <p class="wisdom-text">「若菩萨有我相、人相、众生相、寿者相，即非菩萨。」不执着于自我，才能看清全局。</p>
+    <cite class="wisdom-source">—— 《金刚经·第三品》</cite>
+  </blockquote>
+</div>
 <p>在All-in之前，先看看赛道里有谁。知己知彼才能找到差异化的缝隙。</p>
 
 <h3>5个主要竞品/同类创作者</h3>
@@ -446,6 +478,13 @@ tr:hover td{background:rgba(74,108,247,.05)}
 <!-- CH3 -->
 <section data-ch="3">
 <h2>第三章：三条主攻路径深度落地方案</h2>
+<div class="wisdom-quote">
+  <span class="wisdom-icon">📜</span>
+  <blockquote>
+    <p class="wisdom-text">「付出不亚于任何人的努力。这是自然界的大法则，是人类社会最朴素的原理。」</p>
+    <cite class="wisdom-source">—— 稻盛和夫《活法》</cite>
+  </blockquote>
+</div>
 
 <h3>路径1：付费专栏——「AI武装销售团队：从0到1实战手册」</h3>
 
@@ -836,6 +875,13 @@ tr:hover td{background:rgba(74,108,247,.05)}
 <!-- CH4 -->
 <section data-ch="4">
 <h2>第四章：两条观望路径</h2>
+<div class="wisdom-quote">
+  <span class="wisdom-icon">📜</span>
+  <blockquote>
+    <p class="wisdom-text">「善战者，立于不败之地，而不失敌之败也。是故胜兵先胜而后求战，败兵先战而后求胜。」</p>
+    <cite class="wisdom-source">—— 《孙子兵法·军形篇》</cite>
+  </blockquote>
+</div>
 
 <h3>观望路径1：企业内训/团队陪跑</h3>
 <p><strong>什么时候启动：</strong></p>
@@ -926,6 +972,13 @@ tr:hover td{background:rgba(74,108,247,.05)}
 <!-- CH5 -->
 <section data-ch="5">
 <h2>第五章：12个月收入预测表</h2>
+<div class="wisdom-quote">
+  <span class="wisdom-icon">📜</span>
+  <blockquote>
+    <p class="wisdom-text">「以利他之心生活、工作，度过每一天，人生就会发生转变。」</p>
+    <cite class="wisdom-source">—— 稻盛和夫《活法》</cite>
+  </blockquote>
+</div>
 
 <h3>保守预测（最差情况）</h3>
 <div class="tw"><table>
@@ -1089,6 +1142,13 @@ tr:hover td{background:rgba(74,108,247,.05)}
 <!-- CH6 -->
 <section data-ch="6">
 <h2>第六章：本周就做的5件事</h2>
+<div class="wisdom-quote">
+  <span class="wisdom-icon">📜</span>
+  <blockquote>
+    <p class="wisdom-text">「应无所住而生其心。」不执著于结果，但认真对待每一个当下的行动。</p>
+    <cite class="wisdom-source">—— 《金刚经·第十品》</cite>
+  </blockquote>
+</div>
 <p>不是"要做什么"，是<strong>怎么做、打开哪个App、点哪个按钮、填什么内容</strong>。</p>
 
 <div class="cd">
@@ -1176,6 +1236,13 @@ tr:hover td{background:rgba(74,108,247,.05)}
 <!-- CH7 -->
 <section data-ch="7">
 <h2>第七章：风险与止损线</h2>
+<div class="wisdom-quote">
+  <span class="wisdom-icon">📜</span>
+  <blockquote>
+    <p class="wisdom-text">「兵者，国之大事也。死生之地，存亡之道，不可不察也。」</p>
+    <cite class="wisdom-source">—— 《孙子兵法·始计篇》</cite>
+  </blockquote>
+</div>
 
 <h3>路径1（付费专栏）止损线</h3>
 <div class="cd sl">
@@ -1219,6 +1286,13 @@ tr:hover td{background:rgba(74,108,247,.05)}
 <!-- ENDING -->
 <section data-ch="8" class="fis">
 <h2>结尾：一段真话</h2>
+<div class="wisdom-quote">
+  <span class="wisdom-icon">📜</span>
+  <blockquote>
+    <p class="wisdom-text">「人生的意义在于提升心性，磨炼灵魂。让自己的灵魂比出生时更美好、更高尚——这才是人生的目的。」</p>
+    <cite class="wisdom-source">—— 稻盛和夫《活法》</cite>
+  </blockquote>
+</div>
 <p>明杰，</p>
 <p>写到这里，我要跟你说几句可能不太好听的话。</p>
 <p>上面这些路径、数字、方案，看起来很完整对不对？但你要知道，<strong>90%做副业的人在第3个月就放弃了</strong>。不是因为他们做不到，是因为第1个月热情满满，第2个月开始累了，第3个月发现——咦，怎么才赚了几百块钱？</p>
