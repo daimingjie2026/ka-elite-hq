@@ -8,19 +8,26 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
-  background: #f4f6fa;
-  color: #1a1a2e;
+  background: #0f1724;
+  color: #c8d6e5;
   font-size: 14px;
   line-height: 1.6;
 }
 
-/* ── Header ── */
+/* Header */
 .header {
   background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
   color: #fff;
-  padding: 48px 56px 40px;
+  padding: 56px 64px 48px;
   position: relative;
   overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute; left: -120px; bottom: -120px;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: rgba(245,158,11,0.04);
 }
 .header::after {
   content: '';
@@ -38,110 +45,194 @@ body {
   padding: 4px 12px; border-radius: 20px;
   margin-bottom: 18px; text-transform: uppercase;
 }
-.header h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+.header h1 { font-size: 36px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
 .header .subtitle { color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 28px; }
 .header-meta {
   display: flex; gap: 32px; flex-wrap: wrap;
   border-top: 1px solid rgba(255,255,255,0.1);
   padding-top: 20px;
 }
-.meta-item { }
 .meta-label { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
 .meta-value { font-size: 14px; font-weight: 600; color: #fff; }
 
-/* ── Container ── */
-.container { max-width: 1080px; margin: 0 auto; padding: 36px 24px 60px; }
-
-/* ── Section ── */
-.section-label {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
-  color: #94a3b8; text-transform: uppercase;
-  margin: 40px 0 18px;
+/* Executive Summary */
+.exec-summary {
+  background: linear-gradient(135deg, #0a1628 0%, #152238 50%, #1a2d4a 100%);
+  padding: 48px 56px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(245,158,11,0.15);
 }
-.section-label::after { content: ''; flex: 1; height: 1px; background: #e2e8f0; }
+.exec-summary::before {
+  content: '';
+  position: absolute; right: 0; top: 0; bottom: 0; width: 40%;
+  background: radial-gradient(ellipse at 70% 50%, rgba(245,158,11,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.summary-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(245,158,11,0.12);
+  border: 1px solid rgba(245,158,11,0.35);
+  color: #fbbf24;
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  padding: 5px 14px; border-radius: 20px;
+  margin-bottom: 20px; text-transform: uppercase;
+}
+.summary-headline {
+  font-size: 24px; font-weight: 800; color: #fff;
+  margin-bottom: 36px; line-height: 1.5;
+  max-width: 800px;
+}
+.summary-kpis {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin-bottom: 36px;
+}
+.summary-kpi {
+  text-align: center;
+  padding: 28px 20px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  animation: fadeInUp 0.6s ease-out both;
+}
+.summary-kpi:nth-child(1) { animation-delay: 0.1s; }
+.summary-kpi:nth-child(2) { animation-delay: 0.25s; }
+.summary-kpi:nth-child(3) { animation-delay: 0.4s; }
+.summary-num {
+  font-size: 46px; font-weight: 900;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #f97316 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1; margin-bottom: 8px;
+}
+.summary-label {
+  font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7);
+  letter-spacing: 1px; margin-bottom: 6px;
+}
+.summary-detail { font-size: 12px; color: rgba(255,255,255,0.4); }
+.summary-verdict {
+  padding: 20px 24px;
+  background: rgba(245,158,11,0.06);
+  border: 1px solid rgba(245,158,11,0.15);
+  border-radius: 12px;
+  font-size: 14px; line-height: 1.9;
+  color: rgba(255,255,255,0.85);
+}
+.summary-verdict strong { color: #fbbf24; }
 
-/* ── Card base ── */
+/* Container */
+.container { max-width: 1200px; margin: 0 auto; padding: 40px 28px 60px; }
+
+/* Section */
+.section-label {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  color: #64748b; text-transform: uppercase;
+  margin: 48px 0 20px;
+  padding-left: 14px;
+  position: relative;
+}
+.section-label::before {
+  content: '';
+  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  width: 3px; height: 16px;
+  background: linear-gradient(180deg, #fbbf24, #f97316);
+  border-radius: 2px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06); }
+
+/* Card */
 .card {
-  background: #fff;
+  background: rgba(15, 25, 45, 0.8);
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 14px;
   padding: 24px 26px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
 }
 .card-title {
-  font-size: 13px; font-weight: 700; color: #374151;
+  font-size: 13px; font-weight: 700; color: #e2e8f0;
   margin-bottom: 18px;
   display: flex; align-items: center; gap: 7px;
 }
 .card-title .icon { font-size: 16px; }
 
-/* ── Grid ── */
+/* Grid */
 .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
 
-/* ── KPI Card ── */
+/* KPI Card */
 .kpi-card {
-  background: #fff;
+  background: rgba(15, 25, 45, 0.8);
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 14px;
   padding: 22px 24px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
   position: relative; overflow: hidden;
+  animation: fadeInUp 0.5s ease-out both;
 }
+.kpi-card:nth-child(1) { animation-delay: 0.05s; }
+.kpi-card:nth-child(2) { animation-delay: 0.12s; }
+.kpi-card:nth-child(3) { animation-delay: 0.19s; }
+.kpi-card:nth-child(4) { animation-delay: 0.26s; }
 .kpi-card .accent-bar {
   position: absolute; top: 0; left: 0; right: 0; height: 3px;
   border-radius: 14px 14px 0 0;
 }
-.kpi-label { font-size: 11px; color: #94a3b8; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 12px; }
-.kpi-main { font-size: 28px; font-weight: 800; color: #0f172a; line-height: 1; margin-bottom: 8px; }
+.kpi-label { font-size: 11px; color: #64748b; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 12px; }
+.kpi-main { font-size: 30px; font-weight: 800; color: #f1f5f9; line-height: 1; margin-bottom: 8px; }
 .kpi-compare { display: flex; align-items: center; gap: 8px; }
-.kpi-prev { font-size: 12px; color: #94a3b8; }
+.kpi-prev { font-size: 12px; color: #475569; }
 .kpi-badge {
-  display: inline-block;
+  display: inline-flex; align-items: center; gap: 3px;
   font-size: 11px; font-weight: 700;
   padding: 2px 8px; border-radius: 20px;
 }
-.badge-up { background: #dcfce7; color: #15803d; }
-.badge-warn { background: #fef9c3; color: #854d0e; }
+.badge-up { background: rgba(34,197,94,0.15); color: #4ade80; }
+.badge-warn { background: rgba(234,179,8,0.15); color: #facc15; }
 
-/* ── Bar compare ── */
+/* Bar compare */
 .bar-compare { display: flex; flex-direction: column; gap: 14px; }
 .bar-item-label {
   display: flex; justify-content: space-between; align-items: center;
-  font-size: 12px; color: #475569; margin-bottom: 5px;
+  font-size: 12px; color: #94a3b8; margin-bottom: 5px;
 }
-.bar-item-label .name { font-weight: 500; }
+.bar-item-label .name { font-weight: 500; color: #c8d6e5; }
 .bar-item-label .vals { display: flex; gap: 12px; }
 .bar-item-label .v1 { color: #93c5fd; font-weight: 600; }
 .bar-item-label .v2 { color: #f59e0b; font-weight: 600; }
-.bar-track { height: 8px; background: #f1f5f9; border-radius: 4px; overflow: hidden; position: relative; }
-.bar-fill-p1 { position: absolute; top: 0; left: 0; height: 100%; background: #93c5fd; border-radius: 4px; }
-.bar-fill-p2 { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg,#f59e0b,#f97316); border-radius: 4px; opacity: 0.85; }
 .bar-dual { display: flex; flex-direction: column; gap: 3px; }
 .bar-dual-row { display: flex; align-items: center; gap: 6px; }
-.bar-dual-tag { font-size: 10px; color: #94a3b8; width: 30px; flex-shrink: 0; }
-.bar-dual-track { flex: 1; height: 6px; background: #f1f5f9; border-radius: 3px; overflow: hidden; }
-.bar-dual-fill { height: 100%; border-radius: 3px; }
+.bar-dual-tag { font-size: 10px; color: #64748b; width: 30px; flex-shrink: 0; }
+.bar-dual-track { flex: 1; height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; }
+.bar-dual-fill { height: 100%; border-radius: 4px; }
+.bar-p1 { background: linear-gradient(90deg, #60a5fa, #93c5fd); }
+.bar-p2 { background: linear-gradient(90deg, #f59e0b, #f97316); }
 
-/* ── Store table ── */
+/* Store table */
 .store-table { width: 100%; border-collapse: collapse; }
 .store-table th {
-  font-size: 11px; font-weight: 600; color: #94a3b8;
-  text-align: left; padding: 7px 10px;
-  border-bottom: 1px solid #f1f5f9;
+  font-size: 11px; font-weight: 600; color: #64748b;
+  text-align: left; padding: 8px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
   letter-spacing: 0.5px; text-transform: uppercase;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent);
 }
 .store-table td {
-  font-size: 12px; color: #374151;
-  padding: 8px 10px;
-  border-bottom: 1px solid #f8fafc;
+  font-size: 12px; color: #c8d6e5;
+  padding: 9px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
   vertical-align: middle;
+  transition: background 0.2s;
 }
 .store-table tr:last-child td { border-bottom: none; }
-.store-table tr:hover td { background: #fafafa; }
+.store-table tr:hover td { background: rgba(255,255,255,0.03); }
 .new-tag {
   display: inline-block;
-  background: #fff7ed; color: #c2410c;
+  background: rgba(245,158,11,0.15); color: #f59e0b;
   font-size: 10px; font-weight: 700;
   padding: 1px 6px; border-radius: 8px; margin-left: 4px;
 }
@@ -151,68 +242,150 @@ body {
   vertical-align: middle;
 }
 
-/* ── SKU list ── */
+/* SKU list */
 .sku-list { display: flex; flex-direction: column; gap: 8px; }
 .sku-row { display: flex; align-items: center; gap: 8px; }
-.sku-no { font-size: 11px; color: #cbd5e1; width: 16px; text-align: right; flex-shrink: 0; }
-.sku-name { font-size: 12px; color: #475569; flex: 1; }
+.sku-no { font-size: 11px; color: #475569; width: 16px; text-align: right; flex-shrink: 0; }
+.sku-name { font-size: 12px; color: #94a3b8; flex: 1; }
 .sku-bar-wrap { width: 70px; flex-shrink: 0; }
-.sku-bar-track { height: 4px; background: #f1f5f9; border-radius: 2px; overflow: hidden; }
+.sku-bar-track { height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
 .sku-bar-fill { height: 100%; border-radius: 2px; }
-.sku-val { font-size: 12px; font-weight: 600; color: #1e293b; width: 56px; text-align: right; flex-shrink: 0; }
+.sku-val { font-size: 12px; font-weight: 600; color: #e2e8f0; width: 56px; text-align: right; flex-shrink: 0; }
 
-/* ── Insight cards ── */
+/* Insight cards */
 .insight-card {
-  background: #fff;
+  background: rgba(15, 25, 45, 0.8);
+  border: 1px solid rgba(255,255,255,0.06);
   border-radius: 14px;
-  padding: 20px 22px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+  padding: 22px 24px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
   border-left: 4px solid;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.insight-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
 }
 .insight-icon { font-size: 22px; margin-bottom: 10px; }
-.insight-title { font-size: 13px; font-weight: 700; color: #1e293b; margin-bottom: 6px; }
-.insight-body { font-size: 12px; color: #64748b; line-height: 1.75; }
-.insight-body strong { color: #1e293b; }
+.insight-title { font-size: 13px; font-weight: 700; color: #f1f5f9; margin-bottom: 6px; }
+.insight-body { font-size: 12px; color: #94a3b8; line-height: 1.75; }
+.insight-body strong { color: #fbbf24; }
 
-/* ── BD tag ── */
-.bd-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-.bd-tag {
-  font-size: 12px; font-weight: 600;
-  padding: 4px 12px; border-radius: 20px;
-}
-.bd-old { background: #f1f5f9; color: #64748b; }
-.bd-keep { background: #dbeafe; color: #1d4ed8; }
-.bd-new { background: #fff7ed; color: #c2410c; border: 1px dashed #fed7aa; }
-
-/* ── Conclusion ── */
+/* Conclusion */
 .conclusion {
   background: linear-gradient(135deg, #0f2027 0%, #203a43 60%, #2c5364 100%);
   border-radius: 16px;
-  padding: 36px 40px;
+  padding: 44px 48px;
   color: #fff;
-  margin-top: 40px;
+  margin-top: 48px;
+  border: 1px solid rgba(245,158,11,0.1);
+  position: relative;
+  overflow: hidden;
 }
-.conclusion h2 { font-size: 20px; font-weight: 800; margin-bottom: 18px; }
+.conclusion::before {
+  content: '';
+  position: absolute; right: -40px; top: -40px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: rgba(245,158,11,0.05);
+  pointer-events: none;
+}
+.conclusion h2 {
+  font-size: 22px; font-weight: 800; margin-bottom: 22px;
+  background: linear-gradient(90deg, #fff, #fbbf24);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 .conclusion p { font-size: 14px; color: #cbd5e1; line-height: 1.9; margin-bottom: 12px; }
 .conclusion p:last-child { margin-bottom: 0; }
 .conclusion strong { color: #fbbf24; }
 .conclusion .highlight { color: #4ade80; font-weight: 700; }
 
-/* ── Footer ── */
-.footer { text-align: center; padding: 32px; font-size: 12px; color: #94a3b8; }
+/* Footer */
+.footer-pro { max-width: 1200px; margin: 0 auto; padding: 40px 28px 48px; }
+.footer-line { height: 1px; background: linear-gradient(90deg, transparent, rgba(245,158,11,0.3), transparent); margin-bottom: 28px; }
+.footer-content { text-align: center; }
+.footer-logo { font-size: 15px; font-weight: 700; color: #94a3b8; letter-spacing: 2px; margin-bottom: 10px; }
+.footer-meta-text { font-size: 12px; color: #475569; margin-bottom: 6px; }
+.footer-credit { font-size: 11px; color: #334155; letter-spacing: 0.5px; }
 
-/* ── Responsive ── */
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes goldPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(245,158,11,0.15), inset 0 0 0 1px rgba(245,158,11,0.25); }
+  50% { box-shadow: 0 0 40px rgba(245,158,11,0.3), inset 0 0 0 1px rgba(245,158,11,0.4); }
+}
+@keyframes barPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-in { animation: fadeInUp 0.5s ease-out both; }
+
+/* Dark info boxes */
+.info-dark {
+  margin-top: 12px; padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  font-size: 12px; color: #94a3b8;
+}
+.info-dark strong { color: #fbbf24; }
+.info-gold {
+  margin-top: 12px; padding: 10px 14px;
+  background: rgba(245,158,11,0.06);
+  border: 1px solid rgba(245,158,11,0.15);
+  border-radius: 8px;
+  font-size: 12px; color: #d97706;
+}
+.info-gold strong { color: #f59e0b; }
+.info-blue {
+  margin-top: 14px; padding: 10px 14px;
+  background: rgba(59,130,246,0.06);
+  border: 1px solid rgba(59,130,246,0.15);
+  border-radius: 8px;
+  font-size: 12px; color: #60a5fa;
+}
+.info-blue strong { color: #93c5fd; }
+
+/* Store card gold */
+.store-gold {
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.25);
+  border-radius: 10px;
+  padding: 10px 16px;
+  min-width: 160px;
+  animation: goldPulse 3s ease-in-out infinite;
+}
+.store-green {
+  background: rgba(16,185,129,0.06);
+  border: 1px solid rgba(16,185,129,0.15);
+  border-radius: 10px;
+  padding: 10px 16px;
+  min-width: 140px;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .grid-4 { grid-template-columns: repeat(2,1fr); }
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
-  .header { padding: 28px 20px 24px; }
-  .header h1 { font-size: 22px; }
+  .header { padding: 32px 20px 28px; }
+  .header h1 { font-size: 24px; }
+  .exec-summary { padding: 32px 20px; }
+  .summary-kpis { grid-template-columns: 1fr; }
+  .summary-num { font-size: 36px; }
+  .summary-headline { font-size: 18px; }
   .container { padding: 20px 16px 40px; }
+  .conclusion { padding: 28px 24px; }
 }
 </style>
 </head>
 <body>
-<!-- ══ HEADER ══ -->
+<!-- HEADER -->
 <div class="header">
   <div class="header-eyebrow">📊 客户合作价值报告</div>
   <h1>郑千白切 · 合作价值深度分析</h1>
@@ -237,70 +410,93 @@ body {
   </div>
 </div>
 
-<!-- ══ BODY ══ -->
+<!-- EXECUTIVE SUMMARY -->
+<div class="exec-summary">
+  <div class="summary-badge">📋 执行摘要</div>
+  <h2 class="summary-headline">连锁组接手34天，郑千白切从偶发补货客户升级为日常供应链客户</h2>
+  <div class="summary-kpis">
+    <div class="summary-kpi">
+      <div class="summary-num">+648%</div>
+      <div class="summary-label">销售额增长</div>
+      <div class="summary-detail">¥11,384 → ¥85,191</div>
+    </div>
+    <div class="summary-kpi">
+      <div class="summary-num">8→19家</div>
+      <div class="summary-label">门店扩张</div>
+      <div class="summary-detail">新增11家，覆盖深圳/广州/珠海</div>
+    </div>
+    <div class="summary-kpi">
+      <div class="summary-num">月销8-10万</div>
+      <div class="summary-label">潜力预期</div>
+      <div class="summary-detail">日均¥5,000+，持续加速中</div>
+    </div>
+  </div>
+  <div class="summary-verdict">
+    <strong>结论：</strong>刘心在郑千白切连锁扩张关键窗口完成精准开发，实现从8家到19家的门店覆盖，
+    推动合作性质从"偶发囤货"升级为"日常食材供应"。这是华南连锁组深度运营连锁客户的典型成功案例。
+  </div>
+</div>
+
+<!-- BODY -->
 <div class="container">
-<!-- ══ KPI ══ -->
+
+<!-- KPI -->
 <div class="section-label">核心指标对比</div>
 <div class="grid-4">
-
   <div class="kpi-card">
     <div class="accent-bar" style="background:linear-gradient(90deg,#f59e0b,#f97316)"></div>
     <div class="kpi-label">合作期销售额</div>
     <div class="kpi-main">¥85,191</div>
     <div class="kpi-compare">
       <span class="kpi-prev">前期 ¥11,384</span>
-      <span class="kpi-badge badge-up">↑ +648%</span>
+      <span class="kpi-badge badge-up">▲ +648%</span>
     </div>
   </div>
-
   <div class="kpi-card">
     <div class="accent-bar" style="background:linear-gradient(90deg,#3b82f6,#6366f1)"></div>
     <div class="kpi-label">订单总量</div>
     <div class="kpi-main">3,139</div>
     <div class="kpi-compare">
       <span class="kpi-prev">前期 310单</span>
-      <span class="kpi-badge badge-up">↑ +913%</span>
+      <span class="kpi-badge badge-up">▲ +913%</span>
     </div>
   </div>
-
   <div class="kpi-card">
     <div class="accent-bar" style="background:linear-gradient(90deg,#10b981,#059669)"></div>
     <div class="kpi-label">活跃门店数</div>
     <div class="kpi-main">19家</div>
     <div class="kpi-compare">
       <span class="kpi-prev">前期 8家</span>
-      <span class="kpi-badge badge-up">↑ 新增11家</span>
+      <span class="kpi-badge badge-up">▲ 新增11家</span>
     </div>
   </div>
-
   <div class="kpi-card">
     <div class="accent-bar" style="background:linear-gradient(90deg,#8b5cf6,#a855f7)"></div>
     <div class="kpi-label">日均下单天数</div>
     <div class="kpi-main">33天</div>
     <div class="kpi-compare">
       <span class="kpi-prev">前期 26天</span>
-      <span class="kpi-badge badge-up">↑ 近乎每日</span>
+      <span class="kpi-badge badge-up">▲ 近乎每日</span>
     </div>
   </div>
-
 </div>
 
-<!-- 销售额趋势说明 -->
-<div style="margin-top:16px;background:#fff;border-radius:14px;padding:20px 26px;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+<!-- Daily avg compare -->
+<div class="card" style="margin-top:16px;">
   <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:center;">
     <div style="flex:1;min-width:200px;">
-      <div style="font-size:11px;color:#94a3b8;font-weight:600;letter-spacing:0.5px;margin-bottom:6px;">日均销售额对比</div>
+      <div style="font-size:11px;color:#64748b;font-weight:600;letter-spacing:0.5px;margin-bottom:6px;">日均销售额对比</div>
       <div style="display:flex;align-items:flex-end;gap:16px;">
         <div>
           <div style="font-size:11px;color:#93c5fd;margin-bottom:3px;">地推合作期间</div>
-          <div style="font-size:22px;font-weight:800;color:#1e293b;">¥335</div>
-          <div style="font-size:11px;color:#94a3b8;">/天</div>
+          <div style="font-size:22px;font-weight:800;color:#c8d6e5;">¥335</div>
+          <div style="font-size:11px;color:#475569;">/天</div>
         </div>
-        <div style="font-size:20px;color:#e2e8f0;padding-bottom:8px;">→</div>
+        <div style="font-size:20px;color:#334155;padding-bottom:8px;">→</div>
         <div>
           <div style="font-size:11px;color:#f59e0b;margin-bottom:3px;">连锁组合作期间</div>
           <div style="font-size:22px;font-weight:800;color:#f59e0b;">¥2,506</div>
-          <div style="font-size:11px;color:#94a3b8;">/天</div>
+          <div style="font-size:11px;color:#475569;">/天</div>
         </div>
         <div style="padding-bottom:8px;">
           <span class="kpi-badge badge-up" style="font-size:13px;padding:4px 12px;">×7.5倍</span>
@@ -308,18 +504,18 @@ body {
       </div>
     </div>
     <div style="flex:1;min-width:200px;">
-      <div style="font-size:11px;color:#94a3b8;font-weight:600;letter-spacing:0.5px;margin-bottom:6px;">日均订单量对比</div>
+      <div style="font-size:11px;color:#64748b;font-weight:600;letter-spacing:0.5px;margin-bottom:6px;">日均订单量对比</div>
       <div style="display:flex;align-items:flex-end;gap:16px;">
         <div>
           <div style="font-size:11px;color:#93c5fd;margin-bottom:3px;">地推合作期间</div>
-          <div style="font-size:22px;font-weight:800;color:#1e293b;">9单</div>
-          <div style="font-size:11px;color:#94a3b8;">/天</div>
+          <div style="font-size:22px;font-weight:800;color:#c8d6e5;">9单</div>
+          <div style="font-size:11px;color:#475569;">/天</div>
         </div>
-        <div style="font-size:20px;color:#e2e8f0;padding-bottom:8px;">→</div>
+        <div style="font-size:20px;color:#334155;padding-bottom:8px;">→</div>
         <div>
           <div style="font-size:11px;color:#f59e0b;margin-bottom:3px;">连锁组合作期间</div>
           <div style="font-size:22px;font-weight:800;color:#f59e0b;">95单</div>
-          <div style="font-size:11px;color:#94a3b8;">/天</div>
+          <div style="font-size:11px;color:#475569;">/天</div>
         </div>
         <div style="padding-bottom:8px;">
           <span class="kpi-badge badge-up" style="font-size:13px;padding:4px 12px;">×10倍</span>
@@ -329,20 +525,19 @@ body {
   </div>
 </div>
 
-<!-- ══ STORE ══ -->
+<!-- STORE -->
 <div class="section-label">门店扩张：从8家到19家</div>
 <div class="grid-2">
-
-  <!-- 地推合作期间门店 -->
+  <!-- Before stores -->
   <div class="card">
     <div class="card-title">
       <span class="icon">🏪</span>地推合作期间 活跃门店（8家）
-      <span style="margin-left:auto;font-size:11px;color:#94a3b8;font-weight:400;">2/20—3/25</span>
+      <span style="margin-left:auto;font-size:11px;color:#475569;font-weight:400;">2/20—3/25</span>
     </div>
     <table class="store-table">
       <thead><tr><th>门店名称</th><th>销售额</th><th>订单数</th><th>下单天数</th></tr></thead>
       <tbody>
-        <tr><td>郑千白切（千灯湖店）</td><td><strong>¥3,909</strong></td><td>180</td><td>19天</td></tr>
+        <tr><td>郑千白切（千灯湖店）</td><td><strong style="color:#93c5fd;">¥3,909</strong></td><td>180</td><td>19天</td></tr>
         <tr><td>郑千白切（珠海吉大店）</td><td>¥3,184</td><td>5</td><td>5天</td></tr>
         <tr><td>郑千白切</td><td>¥1,002</td><td>43</td><td>5天</td></tr>
         <tr><td>郑千白切（万科云城店）</td><td>¥757</td><td>13</td><td>4天</td></tr>
@@ -352,22 +547,22 @@ body {
         <tr><td>郑千白切（南山学府店）</td><td>¥521</td><td>9</td><td>3天</td></tr>
       </tbody>
     </table>
-    <div style="margin-top:12px;padding:10px 12px;background:#f8fafc;border-radius:8px;font-size:12px;color:#64748b;">
+    <div class="info-dark">
       合计销售额 <strong>¥11,384</strong> · 日均 <strong>¥335</strong>
     </div>
   </div>
 
-  <!-- 连锁组合作期间门店 -->
+  <!-- After stores -->
   <div class="card">
     <div class="card-title">
       <span class="icon">🚀</span>连锁组合作期间 活跃门店（19家）
-      <span style="margin-left:auto;font-size:11px;color:#94a3b8;font-weight:400;">3/26—4/28</span>
+      <span style="margin-left:auto;font-size:11px;color:#475569;font-weight:400;">3/26—4/28</span>
     </div>
     <table class="store-table">
       <thead><tr><th>门店名称</th><th>销售额</th><th>占比</th><th></th></tr></thead>
       <tbody>
         <tr>
-          <td><strong>郑千白切（科兴店）</strong><span class="new-tag">NEW</span></td>
+          <td><strong style="color:#fbbf24;">郑千白切（科兴店）</strong><span class="new-tag">NEW</span></td>
           <td><strong style="color:#f59e0b;">¥35,862</strong></td>
           <td>42%</td>
           <td><span class="rank-bar-inline" style="width:80px;"></span></td>
@@ -408,88 +603,85 @@ body {
           <td><span class="rank-bar-inline" style="width:5px;"></span></td>
         </tr>
         <tr>
-          <td style="color:#94a3b8;font-size:11px;">其余11家门店</td>
-          <td style="color:#94a3b8;">¥22,468</td><td style="color:#94a3b8;">26%</td><td></td>
+          <td style="color:#475569;font-size:11px;">其余11家门店</td>
+          <td style="color:#475569;">¥22,468</td><td style="color:#475569;">26%</td><td></td>
         </tr>
       </tbody>
     </table>
-    <div style="margin-top:12px;padding:10px 12px;background:#fffbeb;border-radius:8px;font-size:12px;color:#92400e;">
+    <div class="info-gold">
       合计销售额 <strong>¥85,191</strong> · 日均 <strong>¥2,506</strong> · 较前期增长 <strong>+648%</strong>
     </div>
   </div>
-
 </div>
 
-<!-- 新增门店一览 -->
+<!-- New stores -->
 <div class="card" style="margin-top:16px;">
   <div class="card-title"><span class="icon">📍</span>3月26日后新开通门店（11家）</div>
   <div style="display:flex;flex-wrap:wrap;gap:10px;">
-    <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:10px 16px;min-width:160px;">
-      <div style="font-size:12px;font-weight:700;color:#c2410c;">科兴店 ⭐ 核心</div>
+    <div class="store-gold">
+      <div style="font-size:12px;font-weight:700;color:#fbbf24;">科兴店 ⭐ 核心</div>
       <div style="font-size:20px;font-weight:800;color:#f59e0b;margin:4px 0;">¥35,862</div>
-      <div style="font-size:11px;color:#94a3b8;">828单 · 32天连续</div>
+      <div style="font-size:11px;color:#64748b;">828单 · 32天连续</div>
     </div>
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 16px;min-width:140px;">
-      <div style="font-size:12px;font-weight:700;color:#15803d;">牛栏前大厦店</div>
-      <div style="font-size:18px;font-weight:800;color:#16a34a;margin:4px 0;">¥3,637</div>
-      <div style="font-size:11px;color:#94a3b8;">194单 · 15天</div>
+    <div class="store-green">
+      <div style="font-size:12px;font-weight:700;color:#34d399;">牛栏前大厦店</div>
+      <div style="font-size:18px;font-weight:800;color:#10b981;margin:4px 0;">¥3,637</div>
+      <div style="font-size:11px;color:#64748b;">194单 · 15天</div>
     </div>
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 16px;min-width:140px;">
-      <div style="font-size:12px;font-weight:700;color:#15803d;">深圳湾店</div>
-      <div style="font-size:18px;font-weight:800;color:#16a34a;margin:4px 0;">¥3,412</div>
-      <div style="font-size:11px;color:#94a3b8;">165单 · 11天</div>
+    <div class="store-green">
+      <div style="font-size:12px;font-weight:700;color:#34d399;">深圳湾店</div>
+      <div style="font-size:18px;font-weight:800;color:#10b981;margin:4px 0;">¥3,412</div>
+      <div style="font-size:11px;color:#64748b;">165单 · 11天</div>
     </div>
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 16px;min-width:140px;">
-      <div style="font-size:12px;font-weight:700;color:#15803d;">龙井店</div>
-      <div style="font-size:18px;font-weight:800;color:#16a34a;margin:4px 0;">¥3,273</div>
-      <div style="font-size:11px;color:#94a3b8;">287单 · 18天</div>
+    <div class="store-green">
+      <div style="font-size:12px;font-weight:700;color:#34d399;">龙井店</div>
+      <div style="font-size:18px;font-weight:800;color:#10b981;margin:4px 0;">¥3,273</div>
+      <div style="font-size:11px;color:#64748b;">287单 · 18天</div>
     </div>
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 16px;min-width:140px;">
-      <div style="font-size:12px;font-weight:700;color:#15803d;">卓悦汇店</div>
-      <div style="font-size:18px;font-weight:800;color:#16a34a;margin:4px 0;">¥2,832</div>
-      <div style="font-size:11px;color:#94a3b8;">135单 · 8天</div>
+    <div class="store-green">
+      <div style="font-size:12px;font-weight:700;color:#34d399;">卓悦汇店</div>
+      <div style="font-size:18px;font-weight:800;color:#10b981;margin:4px 0;">¥2,832</div>
+      <div style="font-size:11px;color:#64748b;">135单 · 8天</div>
     </div>
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 16px;min-width:140px;">
-      <div style="font-size:12px;font-weight:700;color:#15803d;">宝安西乡店</div>
-      <div style="font-size:18px;font-weight:800;color:#16a34a;margin:4px 0;">¥2,303</div>
-      <div style="font-size:11px;color:#94a3b8;">109单 · 7天</div>
+    <div class="store-green">
+      <div style="font-size:12px;font-weight:700;color:#34d399;">宝安西乡店</div>
+      <div style="font-size:18px;font-weight:800;color:#10b981;margin:4px 0;">¥2,303</div>
+      <div style="font-size:11px;color:#64748b;">109单 · 7天</div>
     </div>
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 16px;min-width:140px;">
-      <div style="font-size:12px;font-weight:700;color:#15803d;">华强北店</div>
-      <div style="font-size:18px;font-weight:800;color:#16a34a;margin:4px 0;">¥1,803</div>
-      <div style="font-size:11px;color:#94a3b8;">72单 · 7天</div>
+    <div class="store-green">
+      <div style="font-size:12px;font-weight:700;color:#34d399;">华强北店</div>
+      <div style="font-size:18px;font-weight:800;color:#10b981;margin:4px 0;">¥1,803</div>
+      <div style="font-size:11px;color:#64748b;">72单 · 7天</div>
     </div>
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 16px;min-width:140px;">
-      <div style="font-size:12px;font-weight:700;color:#15803d;">石厦店</div>
-      <div style="font-size:18px;font-weight:800;color:#16a34a;margin:4px 0;">¥1,676</div>
-      <div style="font-size:11px;color:#94a3b8;">73单 · 7天</div>
+    <div class="store-green">
+      <div style="font-size:12px;font-weight:700;color:#34d399;">石厦店</div>
+      <div style="font-size:18px;font-weight:800;color:#10b981;margin:4px 0;">¥1,676</div>
+      <div style="font-size:11px;color:#64748b;">73单 · 7天</div>
     </div>
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 16px;min-width:140px;">
-      <div style="font-size:12px;font-weight:700;color:#15803d;">梅林店</div>
-      <div style="font-size:18px;font-weight:800;color:#16a34a;margin:4px 0;">¥1,421</div>
-      <div style="font-size:11px;color:#94a3b8;">78单 · 7天</div>
+    <div class="store-green">
+      <div style="font-size:12px;font-weight:700;color:#34d399;">梅林店</div>
+      <div style="font-size:18px;font-weight:800;color:#10b981;margin:4px 0;">¥1,421</div>
+      <div style="font-size:11px;color:#64748b;">78单 · 7天</div>
     </div>
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 16px;min-width:160px;">
-      <div style="font-size:12px;font-weight:700;color:#15803d;">广西风味（科兴店）</div>
-      <div style="font-size:18px;font-weight:800;color:#16a34a;margin:4px 0;">¥1,551</div>
-      <div style="font-size:11px;color:#94a3b8;">25单 · 1天</div>
+    <div class="store-green" style="min-width:160px;">
+      <div style="font-size:12px;font-weight:700;color:#34d399;">广西风味（科兴店）</div>
+      <div style="font-size:18px;font-weight:800;color:#10b981;margin:4px 0;">¥1,551</div>
+      <div style="font-size:11px;color:#64748b;">25单 · 1天</div>
     </div>
-    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 16px;min-width:160px;">
-      <div style="font-size:12px;font-weight:700;color:#15803d;">番禺汉溪长隆店</div>
-      <div style="font-size:18px;font-weight:800;color:#16a34a;margin:4px 0;">¥364</div>
-      <div style="font-size:11px;color:#94a3b8;">23单 · 1天</div>
+    <div class="store-green" style="min-width:160px;">
+      <div style="font-size:12px;font-weight:700;color:#34d399;">番禺汉溪长隆店</div>
+      <div style="font-size:18px;font-weight:800;color:#10b981;margin:4px 0;">¥364</div>
+      <div style="font-size:11px;color:#64748b;">23单 · 1天</div>
     </div>
   </div>
 </div>
 
-<!-- ══ CATEGORY ══ -->
+<!-- CATEGORY -->
 <div class="section-label">品类结构：合作性质根本转变</div>
 <div class="grid-2">
-
   <div class="card">
     <div class="card-title"><span class="icon">📊</span>品类销售额对比（前 vs 后）</div>
     <div class="bar-compare">
-
       <div>
         <div class="bar-item-label">
           <span class="name">新鲜蔬菜</span>
@@ -497,16 +689,15 @@ body {
         </div>
         <div class="bar-dual">
           <div class="bar-dual-row">
-            <div class="bar-dual-tag" style="color:#93c5fd;">地推合作期间</div>
+            <div class="bar-dual-tag" style="color:#93c5fd;">前</div>
             <div class="bar-dual-track"><div class="bar-dual-fill bar-p1" style="width:3%;"></div></div>
           </div>
           <div class="bar-dual-row">
-            <div class="bar-dual-tag" style="color:#f59e0b;">连锁组合作期间</div>
+            <div class="bar-dual-tag" style="color:#f59e0b;">后</div>
             <div class="bar-dual-track"><div class="bar-dual-fill bar-p2" style="width:100%;"></div></div>
           </div>
         </div>
       </div>
-
       <div>
         <div class="bar-item-label">
           <span class="name">籼米</span>
@@ -514,16 +705,15 @@ body {
         </div>
         <div class="bar-dual">
           <div class="bar-dual-row">
-            <div class="bar-dual-tag" style="color:#93c5fd;">地推合作期间</div>
+            <div class="bar-dual-tag" style="color:#93c5fd;">前</div>
             <div class="bar-dual-track"><div class="bar-dual-fill bar-p1" style="width:42%;"></div></div>
           </div>
           <div class="bar-dual-row">
-            <div class="bar-dual-tag" style="color:#f59e0b;">连锁组合作期间</div>
+            <div class="bar-dual-tag" style="color:#f59e0b;">后</div>
             <div class="bar-dual-track"><div class="bar-dual-fill bar-p2" style="width:11%;"></div></div>
           </div>
         </div>
       </div>
-
       <div>
         <div class="bar-item-label">
           <span class="name">饮料类</span>
@@ -531,16 +721,15 @@ body {
         </div>
         <div class="bar-dual">
           <div class="bar-dual-row">
-            <div class="bar-dual-tag" style="color:#93c5fd;">地推合作期间</div>
+            <div class="bar-dual-tag" style="color:#93c5fd;">前</div>
             <div class="bar-dual-track"><div class="bar-dual-fill bar-p1" style="width:27%;"></div></div>
           </div>
           <div class="bar-dual-row">
-            <div class="bar-dual-tag" style="color:#f59e0b;">连锁组合作期间</div>
+            <div class="bar-dual-tag" style="color:#f59e0b;">后</div>
             <div class="bar-dual-track"><div class="bar-dual-fill bar-p2" style="width:3%;"></div></div>
           </div>
         </div>
       </div>
-
       <div>
         <div class="bar-item-label">
           <span class="name">鲜猪肉</span>
@@ -548,16 +737,15 @@ body {
         </div>
         <div class="bar-dual">
           <div class="bar-dual-row">
-            <div class="bar-dual-tag" style="color:#93c5fd;">地推合作期间</div>
+            <div class="bar-dual-tag" style="color:#93c5fd;">前</div>
             <div class="bar-dual-track"><div class="bar-dual-fill bar-p1" style="width:1%;"></div></div>
           </div>
           <div class="bar-dual-row">
-            <div class="bar-dual-tag" style="color:#f59e0b;">连锁组合作期间</div>
+            <div class="bar-dual-tag" style="color:#f59e0b;">后</div>
             <div class="bar-dual-track"><div class="bar-dual-fill bar-p2" style="width:12%;"></div></div>
           </div>
         </div>
       </div>
-
       <div>
         <div class="bar-item-label">
           <span class="name">植物油</span>
@@ -565,23 +753,22 @@ body {
         </div>
         <div class="bar-dual">
           <div class="bar-dual-row">
-            <div class="bar-dual-tag" style="color:#93c5fd;">地推合作期间</div>
+            <div class="bar-dual-tag" style="color:#93c5fd;">前</div>
             <div class="bar-dual-track"><div class="bar-dual-fill bar-p1" style="width:0.5%;"></div></div>
           </div>
           <div class="bar-dual-row">
-            <div class="bar-dual-tag" style="color:#f59e0b;">连锁组合作期间</div>
+            <div class="bar-dual-tag" style="color:#f59e0b;">后</div>
             <div class="bar-dual-track"><div class="bar-dual-fill bar-p2" style="width:3%;"></div></div>
           </div>
         </div>
       </div>
-
     </div>
-    <div style="margin-top:14px;padding:10px 12px;background:#eff6ff;border-radius:8px;font-size:12px;color:#1d4ed8;">
+    <div class="info-blue">
       🔄 蔬菜占比从 <strong>14%</strong> 跃升至 <strong>60%</strong>，合作从"囤货补货"升级为"日常食材供应"
     </div>
   </div>
 
-  <!-- 品类占比饼图（用色块模拟） -->
+  <!-- Category proportions -->
   <div class="card">
     <div class="card-title"><span class="icon">🥧</span>品类占比变化</div>
     <div style="display:flex;gap:20px;">
@@ -590,23 +777,23 @@ body {
         <div style="display:flex;flex-direction:column;gap:6px;">
           <div style="display:flex;align-items:center;gap:8px;">
             <div style="width:12px;height:12px;border-radius:2px;background:#93c5fd;flex-shrink:0;"></div>
-            <div style="font-size:12px;color:#475569;flex:1;">籼米</div>
-            <div style="font-size:12px;font-weight:700;color:#1e293b;">42%</div>
+            <div style="font-size:12px;color:#94a3b8;flex:1;">籼米</div>
+            <div style="font-size:12px;font-weight:700;color:#c8d6e5;">42%</div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <div style="width:12px;height:12px;border-radius:2px;background:#7dd3fc;flex-shrink:0;"></div>
-            <div style="font-size:12px;color:#475569;flex:1;">饮料类</div>
-            <div style="font-size:12px;font-weight:700;color:#1e293b;">27%</div>
+            <div style="font-size:12px;color:#94a3b8;flex:1;">饮料类</div>
+            <div style="font-size:12px;font-weight:700;color:#c8d6e5;">27%</div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <div style="width:12px;height:12px;border-radius:2px;background:#bae6fd;flex-shrink:0;"></div>
-            <div style="font-size:12px;color:#475569;flex:1;">新鲜蔬菜</div>
-            <div style="font-size:12px;font-weight:700;color:#1e293b;">14%</div>
+            <div style="font-size:12px;color:#94a3b8;flex:1;">新鲜蔬菜</div>
+            <div style="font-size:12px;font-weight:700;color:#c8d6e5;">14%</div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <div style="width:12px;height:12px;border-radius:2px;background:#e0f2fe;flex-shrink:0;"></div>
-            <div style="font-size:12px;color:#475569;flex:1;">其他</div>
-            <div style="font-size:12px;font-weight:700;color:#1e293b;">17%</div>
+            <div style="font-size:12px;color:#94a3b8;flex:1;">其他</div>
+            <div style="font-size:12px;font-weight:700;color:#c8d6e5;">17%</div>
           </div>
         </div>
         <div style="margin-top:12px;height:8px;border-radius:4px;overflow:hidden;display:flex;">
@@ -616,29 +803,29 @@ body {
           <div style="flex:1;background:#e0f2fe;"></div>
         </div>
       </div>
-      <div style="width:1px;background:#f1f5f9;"></div>
+      <div style="width:1px;background:rgba(255,255,255,0.06);"></div>
       <div style="flex:1;">
         <div style="font-size:11px;color:#f59e0b;font-weight:700;margin-bottom:10px;text-align:center;">连锁组合作期间</div>
         <div style="display:flex;flex-direction:column;gap:6px;">
           <div style="display:flex;align-items:center;gap:8px;">
             <div style="width:12px;height:12px;border-radius:2px;background:#f59e0b;flex-shrink:0;"></div>
-            <div style="font-size:12px;color:#475569;flex:1;">新鲜蔬菜</div>
+            <div style="font-size:12px;color:#94a3b8;flex:1;">新鲜蔬菜</div>
             <div style="font-size:12px;font-weight:700;color:#f59e0b;">60%</div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <div style="width:12px;height:12px;border-radius:2px;background:#fb923c;flex-shrink:0;"></div>
-            <div style="font-size:12px;color:#475569;flex:1;">鲜猪肉</div>
-            <div style="font-size:12px;font-weight:700;color:#1e293b;">7%</div>
+            <div style="font-size:12px;color:#94a3b8;flex:1;">鲜猪肉</div>
+            <div style="font-size:12px;font-weight:700;color:#c8d6e5;">7%</div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <div style="width:12px;height:12px;border-radius:2px;background:#fcd34d;flex-shrink:0;"></div>
-            <div style="font-size:12px;color:#475569;flex:1;">籼米</div>
-            <div style="font-size:12px;font-weight:700;color:#1e293b;">7%</div>
+            <div style="font-size:12px;color:#94a3b8;flex:1;">籼米</div>
+            <div style="font-size:12px;font-weight:700;color:#c8d6e5;">7%</div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <div style="width:12px;height:12px;border-radius:2px;background:#fef3c7;flex-shrink:0;"></div>
-            <div style="font-size:12px;color:#475569;flex:1;">其他</div>
-            <div style="font-size:12px;font-weight:700;color:#1e293b;">26%</div>
+            <div style="font-size:12px;color:#94a3b8;flex:1;">其他</div>
+            <div style="font-size:12px;font-weight:700;color:#c8d6e5;">26%</div>
           </div>
         </div>
         <div style="margin-top:12px;height:8px;border-radius:4px;overflow:hidden;display:flex;">
@@ -650,15 +837,13 @@ body {
       </div>
     </div>
   </div>
-
 </div>
 
-<!-- ══ SKU ══ -->
+<!-- SKU -->
 <div class="section-label">爆款 SKU 对比：从囤货到日常净菜</div>
 <div class="grid-2">
-
   <div class="card">
-    <div class="card-title"><span class="icon">📦</span>地推合作期间 TOP SKU <span style="font-size:11px;color:#94a3b8;font-weight:400;margin-left:6px;">大包装·低频·囤货型</span></div>
+    <div class="card-title"><span class="icon">📦</span>地推合作期间 TOP SKU <span style="font-size:11px;color:#475569;font-weight:400;margin-left:6px;">大包装·低频·囤货型</span></div>
     <div class="sku-list">
       <div class="sku-row">
         <div class="sku-no">1</div>
@@ -691,13 +876,13 @@ body {
         <div class="sku-val">¥324</div>
       </div>
     </div>
-    <div style="margin-top:12px;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:11px;color:#64748b;">
+    <div class="info-dark">
       特征：大包装囤货，单次金额大，下单频次低
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title"><span class="icon">🥬</span>连锁组合作期间 TOP SKU <span style="font-size:11px;color:#94a3b8;font-weight:400;margin-left:6px;">自加工净菜·高频·日常型</span></div>
+    <div class="card-title"><span class="icon">🥬</span>连锁组合作期间 TOP SKU <span style="font-size:11px;color:#475569;font-weight:400;margin-left:6px;">自加工净菜·高频·日常型</span></div>
     <div class="sku-list">
       <div class="sku-row">
         <div class="sku-no">1</div>
@@ -730,17 +915,15 @@ body {
         <div class="sku-val">¥1,855</div>
       </div>
     </div>
-    <div style="margin-top:12px;padding:8px 12px;background:#fffbeb;border-radius:8px;font-size:11px;color:#92400e;">
+    <div class="info-gold">
       特征：自加工净菜为主，每日高频采购，已成为日常食材供应商
     </div>
   </div>
-
 </div>
 
-<!-- ══ INSIGHT ══ -->
+<!-- INSIGHT -->
 <div class="section-label">深度洞察：刘心的合作价值</div>
 <div class="grid-3">
-
   <div class="insight-card" style="border-color:#f59e0b;">
     <div class="insight-icon">🔑</div>
     <div class="insight-title">科兴店激活是核心突破</div>
@@ -749,7 +932,6 @@ body {
       828单、32天连续下单，客户等级快速升至 <strong>A-1</strong>，是本次合作爆发的绝对核心。
     </div>
   </div>
-
   <div class="insight-card" style="border-color:#3b82f6;">
     <div class="insight-icon">🏗️</div>
     <div class="insight-title">连锁拓展：11家新店集中开通</div>
@@ -758,7 +940,6 @@ body {
       刘心抓住时机，完成连锁签约，将单一客户转化为 <strong>覆盖深圳、广州、珠海</strong> 的连锁供应体系。
     </div>
   </div>
-
   <div class="insight-card" style="border-color:#10b981;">
     <div class="insight-icon">📈</div>
     <div class="insight-title">3P新客占比从6%跃升至75%</div>
@@ -767,7 +948,6 @@ body {
       新开通门店均为3P纯新客或存量转3P，3P合作的深度绑定是增长的制度性保障。
     </div>
   </div>
-
   <div class="insight-card" style="border-color:#8b5cf6;">
     <div class="insight-icon">🥬</div>
     <div class="insight-title">从"偶发补货"到"日常供应商"</div>
@@ -776,7 +956,6 @@ body {
       自加工净菜每日高频采购，美团已成为郑千白切 <strong>不可替代的日常食材供应商</strong>。
     </div>
   </div>
-
   <div class="insight-card" style="border-color:#f43f5e;">
     <div class="insight-icon">💰</div>
     <div class="insight-title">客户价值潜力：月销8-10万</div>
@@ -785,7 +964,6 @@ body {
       且仍有多家门店处于开通初期。按当前趋势，月销售额有望稳定在 <strong>¥8-10万</strong> 区间。
     </div>
   </div>
-
   <div class="insight-card" style="border-color:#0ea5e9;">
     <div class="insight-icon">👤</div>
     <div class="insight-title">刘心的关键作用</div>
@@ -795,34 +973,33 @@ body {
       这是连锁组深度运营连锁客户的典型成功案例。
     </div>
   </div>
-
 </div>
 
-<!-- 3P与自营对比 -->
+<!-- 3P vs self -->
 <div class="section-label">供应结构：3P合作深度绑定</div>
 <div class="grid-2">
   <div class="card">
     <div class="card-title"><span class="icon">🔗</span>3P vs 自营 销售额对比</div>
     <div style="display:flex;gap:24px;">
-      <div style="flex:1;text-align:center;padding:16px;background:#f8fafc;border-radius:10px;">
+      <div style="flex:1;text-align:center;padding:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;">
         <div style="font-size:11px;color:#93c5fd;font-weight:700;margin-bottom:8px;">地推合作期间</div>
         <div style="font-size:13px;color:#64748b;margin-bottom:4px;">3P新客</div>
-        <div style="font-size:24px;font-weight:800;color:#1e293b;">6%</div>
-        <div style="font-size:11px;color:#94a3b8;">¥678</div>
+        <div style="font-size:24px;font-weight:800;color:#c8d6e5;">6%</div>
+        <div style="font-size:11px;color:#475569;">¥678</div>
       </div>
-      <div style="display:flex;align-items:center;font-size:20px;color:#e2e8f0;">→</div>
-      <div style="flex:1;text-align:center;padding:16px;background:#fffbeb;border-radius:10px;border:1px solid #fde68a;">
+      <div style="display:flex;align-items:center;font-size:20px;color:#334155;">→</div>
+      <div style="flex:1;text-align:center;padding:16px;background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:10px;">
         <div style="font-size:11px;color:#f59e0b;font-weight:700;margin-bottom:8px;">连锁组合作期间</div>
         <div style="font-size:13px;color:#64748b;margin-bottom:4px;">3P新客</div>
         <div style="font-size:24px;font-weight:800;color:#f59e0b;">75%</div>
-        <div style="font-size:11px;color:#94a3b8;">¥63,845</div>
+        <div style="font-size:11px;color:#475569;">¥63,845</div>
       </div>
     </div>
     <div style="margin-top:14px;">
-      <div style="font-size:11px;color:#94a3b8;margin-bottom:6px;">自营件数增长</div>
+      <div style="font-size:11px;color:#475569;margin-bottom:6px;">自营件数增长</div>
       <div style="display:flex;align-items:center;gap:12px;">
         <span style="font-size:13px;color:#64748b;">地推合作期间 180件</span>
-        <span style="font-size:18px;color:#e2e8f0;">→</span>
+        <span style="font-size:18px;color:#334155;">→</span>
         <span style="font-size:18px;font-weight:800;color:#10b981;">连锁组合作期间 4,290件</span>
         <span class="kpi-badge badge-up">×23倍</span>
       </div>
@@ -831,54 +1008,54 @@ body {
 
   <div class="card">
     <div class="card-title"><span class="icon">📅</span>连锁组合作期间 销售额增长趋势</div>
-    <div style="display:flex;flex-direction:column;gap:4px;">
-      <div style="font-size:11px;color:#94a3b8;margin-bottom:6px;">按周汇总（连锁组合作期间）</div>
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <div style="font-size:11px;color:#475569;margin-bottom:4px;">按周汇总（连锁组合作期间）</div>
       <div style="display:flex;align-items:center;gap:8px;">
         <div style="font-size:11px;color:#64748b;width:80px;flex-shrink:0;">3/26-4/1</div>
-        <div style="flex:1;height:20px;background:#f1f5f9;border-radius:4px;overflow:hidden;">
-          <div style="width:16%;height:100%;background:linear-gradient(90deg,#f59e0b,#f97316);border-radius:4px;display:flex;align-items:center;padding-left:6px;">
-            <span style="font-size:10px;color:#fff;font-weight:700;white-space:nowrap;">¥10,293</span>
+        <div style="flex:1;height:36px;background:rgba(255,255,255,0.03);border-radius:6px;overflow:hidden;">
+          <div style="width:16%;height:100%;background:linear-gradient(90deg,#f59e0b,#f97316);border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;min-width:90px;">
+            <span style="font-size:12px;color:#fff;font-weight:700;white-space:nowrap;">¥10,293</span>
           </div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
         <div style="font-size:11px;color:#64748b;width:80px;flex-shrink:0;">4/2-4/8</div>
-        <div style="flex:1;height:20px;background:#f1f5f9;border-radius:4px;overflow:hidden;">
-          <div style="width:20%;height:100%;background:linear-gradient(90deg,#f59e0b,#f97316);border-radius:4px;display:flex;align-items:center;padding-left:6px;">
-            <span style="font-size:10px;color:#fff;font-weight:700;white-space:nowrap;">¥12,308</span>
+        <div style="flex:1;height:36px;background:rgba(255,255,255,0.03);border-radius:6px;overflow:hidden;">
+          <div style="width:20%;height:100%;background:linear-gradient(90deg,#f59e0b,#f97316);border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;min-width:90px;">
+            <span style="font-size:12px;color:#fff;font-weight:700;white-space:nowrap;">¥12,308</span>
           </div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
         <div style="font-size:11px;color:#64748b;width:80px;flex-shrink:0;">4/9-4/15</div>
-        <div style="flex:1;height:20px;background:#f1f5f9;border-radius:4px;overflow:hidden;">
-          <div style="width:35%;height:100%;background:linear-gradient(90deg,#f59e0b,#f97316);border-radius:4px;display:flex;align-items:center;padding-left:6px;">
-            <span style="font-size:10px;color:#fff;font-weight:700;white-space:nowrap;">¥21,607</span>
+        <div style="flex:1;height:36px;background:rgba(255,255,255,0.03);border-radius:6px;overflow:hidden;">
+          <div style="width:35%;height:100%;background:linear-gradient(90deg,#f59e0b,#f97316);border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;min-width:90px;">
+            <span style="font-size:12px;color:#fff;font-weight:700;white-space:nowrap;">¥21,607</span>
           </div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
         <div style="font-size:11px;color:#64748b;width:80px;flex-shrink:0;">4/16-4/22</div>
-        <div style="flex:1;height:20px;background:#f1f5f9;border-radius:4px;overflow:hidden;">
-          <div style="width:65%;height:100%;background:linear-gradient(90deg,#f59e0b,#f97316);border-radius:4px;display:flex;align-items:center;padding-left:6px;">
-            <span style="font-size:10px;color:#fff;font-weight:700;white-space:nowrap;">¥40,083</span>
+        <div style="flex:1;height:36px;background:rgba(255,255,255,0.03);border-radius:6px;overflow:hidden;">
+          <div style="width:65%;height:100%;background:linear-gradient(90deg,#f59e0b,#f97316);border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;min-width:90px;">
+            <span style="font-size:12px;color:#fff;font-weight:700;white-space:nowrap;">¥40,083</span>
           </div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
         <div style="font-size:11px;color:#64748b;width:80px;flex-shrink:0;">4/23-4/27</div>
-        <div style="flex:1;height:20px;background:#f1f5f9;border-radius:4px;overflow:hidden;">
-          <div style="width:100%;height:100%;background:linear-gradient(90deg,#f59e0b,#f97316);border-radius:4px;display:flex;align-items:center;padding-left:6px;">
-            <span style="font-size:10px;color:#fff;font-weight:700;white-space:nowrap;">¥26,709（5天）</span>
+        <div style="flex:1;height:36px;background:rgba(255,255,255,0.03);border-radius:6px;overflow:hidden;position:relative;">
+          <div style="width:100%;height:100%;background:linear-gradient(90deg,#f59e0b,#f97316);border-radius:6px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;min-width:90px;animation:barPulse 2s ease-in-out infinite;">
+            <span style="font-size:12px;color:#fff;font-weight:700;white-space:nowrap;">¥26,709（5天）</span>
           </div>
         </div>
       </div>
     </div>
-    <div style="margin-top:10px;font-size:11px;color:#94a3b8;">销售额呈持续加速增长态势，4月下旬日均已超 ¥5,000</div>
+    <div style="margin-top:10px;font-size:11px;color:#475569;">销售额呈持续加速增长态势，4月下旬日均已超 ¥5,000</div>
   </div>
 </div>
 
-<!-- ══ CONCLUSION ══ -->
+<!-- CONCLUSION -->
 <div class="conclusion">
   <h2>📋 综合结论：与刘心合作的价值</h2>
   <p>
@@ -899,11 +1076,41 @@ body {
 
 </div>
 
-<!-- ══ FOOTER ══ -->
-<div class="footer">
-  数据来源：订单明细 2026-02-20 ~ 2026-04-27 &nbsp;·&nbsp; 华南连锁组 · 刘心 &nbsp;·&nbsp; 报告生成：2026-04-28
+<!-- FOOTER -->
+<div class="footer-pro">
+  <div class="footer-line"></div>
+  <div class="footer-content">
+    <div class="footer-logo">快驴 · 华南连锁组</div>
+    <div class="footer-meta-text">数据来源：订单明细 2026-02-20 ~ 2026-04-27 · 报告日期：2026-04-28</div>
+    <div class="footer-credit">Powered by Nova AI · KA精英数据中台</div>
+  </div>
 </div>
 
+<!-- Intersection Observer for scroll animations -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var cards = document.querySelectorAll('.card, .insight-card, .kpi-card');
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    cards.forEach(function(card) {
+      if (!card.classList.contains('kpi-card')) {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(25px)';
+        card.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+      }
+      observer.observe(card);
+    });
+  }
+});
+</script>
 
 </body>
 </html>
