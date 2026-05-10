@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>黔有财 · RFM会员分层运营方案</title>
+<style>
+:root{--brand-dark:#1e0805;--brand-gold:#D4A017;--brand-red:#C0392B;--brand-cream:#EAD8B8;--tier1:#D4A017;--tier2:#E67E22;--tier3:#C0392B;--tier4:#7F8C8D;--bg:#faf6f0}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--brand-dark);line-height:1.7}
+.container{max-width:960px;margin:0 auto;padding:20px}
+.cover{background:linear-gradient(135deg,var(--brand-dark) 0%,#3d1a0f 100%);color:#fff;padding:80px 40px;text-align:center;border-radius:16px;margin-bottom:40px;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;top:-50%;right:-20%;width:400px;height:400px;background:radial-gradient(circle,rgba(212,160,23,0.15) 0%,transparent 70%);border-radius:50%}
+.cover h1{font-size:2.4em;margin-bottom:12px;color:var(--brand-gold);text-shadow:0 2px 8px rgba(0,0,0,0.3)}
+.cover .subtitle{font-size:1.2em;color:var(--brand-cream);opacity:0.9}
+.cover .brand{font-size:1em;margin-top:0;margin-bottom:16px;color:rgba(255,255,255,0.6)}
+.cover .stats-bar{display:flex;justify-content:center;gap:40px;margin-top:32px;flex-wrap:wrap}
+.cover .stat-item{text-align:center}
+.cover .stat-item .num{font-size:2em;font-weight:700;color:var(--brand-gold)}
+.cover .stat-item .label{font-size:0.85em;color:var(--brand-cream)}
+.section{background:#fff;border-radius:12px;padding:36px 32px;margin-bottom:28px;box-shadow:0 2px 12px rgba(30,8,5,0.06)}
+.section h2{font-size:1.5em;color:var(--brand-dark);margin-bottom:20px;padding-bottom:12px;border-bottom:3px solid var(--brand-gold);display:flex;align-items:center;gap:10px}
+.section h2 .num{background:var(--brand-gold);color:#fff;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75em;flex-shrink:0}
+.section h3{font-size:1.15em;color:var(--brand-dark);margin:20px 0 12px}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:16px 0}
+.card{background:var(--bg);border-radius:10px;padding:18px;text-align:center;border:1px solid rgba(212,160,23,0.2)}
+.card .value{font-size:1.7em;font-weight:700;color:var(--brand-red)}
+.card .desc{font-size:0.82em;color:#666;margin-top:4px}
+.pyramid{display:flex;flex-direction:column;align-items:center;margin:24px 0}
+.pyramid-tier{text-align:center;padding:14px 20px;margin:3px 0;border-radius:6px;color:#fff;font-weight:600}
+.pyramid-tier.t1{background:linear-gradient(90deg,#c8961a,var(--brand-gold));width:35%}
+.pyramid-tier.t2{background:linear-gradient(90deg,#d46a12,var(--tier2));width:50%}
+.pyramid-tier.t3{background:linear-gradient(90deg,#a33025,var(--brand-red));width:75%}
+.pyramid-tier.t4{background:linear-gradient(90deg,#5f6a6a,var(--tier4));width:90%}
+.pyramid-tier .tier-name{font-size:1em}
+.pyramid-tier .tier-info{font-size:0.78em;opacity:0.9;margin-top:2px}
+.funnel{display:flex;flex-direction:column;align-items:center;margin:20px 0}
+.funnel-step{display:flex;align-items:center;justify-content:center;padding:12px 24px;margin:2px 0;border-radius:6px;color:#fff;font-weight:500}
+.funnel-step.f1{background:var(--brand-gold);width:90%}
+.funnel-step.f2{background:var(--tier2);width:70%}
+.funnel-step.f3{background:var(--brand-red);width:55%}
+.funnel-step.f4{background:var(--tier4);width:45%}
+.funnel-arrow{font-size:1.2em;color:var(--brand-dark);margin:2px 0}
+.strategy-box{background:linear-gradient(135deg,#fefcf7 0%,#fdf5e6 100%);border-left:4px solid var(--brand-gold);border-radius:8px;padding:18px 22px;margin:14px 0}
+.strategy-box.tier1{border-left-color:var(--tier1)}
+.strategy-box.tier2{border-left-color:var(--tier2)}
+.strategy-box.tier3{border-left-color:var(--tier3)}
+.strategy-box.tier4{border-left-color:var(--tier4)}
+.strategy-box h4{color:var(--brand-dark);margin-bottom:8px;font-size:1.02em}
+.strategy-box ul{padding-left:20px;color:#444}
+.strategy-box li{margin-bottom:5px;font-size:0.92em}
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.88em}
+.data-table th{background:var(--brand-dark);color:var(--brand-cream);padding:9px 11px;text-align:left}
+.data-table td{padding:9px 11px;border-bottom:1px solid #eee}
+.data-table tr:hover td{background:rgba(212,160,23,0.05)}
+.tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:0.78em;font-weight:600;margin:2px 3px}
+.tag-gold{background:rgba(212,160,23,0.15);color:#a07800}
+.tag-red{background:rgba(192,57,43,0.12);color:var(--brand-red)}
+.tag-green{background:rgba(39,174,96,0.12);color:#1a8a4a}
+.tag-gray{background:rgba(127,140,141,0.12);color:#5a6363}
+.kpi-row{display:flex;gap:14px;flex-wrap:wrap;margin:16px 0}
+.kpi-item{flex:1;min-width:160px;background:var(--bg);border-radius:8px;padding:14px;text-align:center;border:1px solid rgba(212,160,23,0.15)}
+.kpi-item .kpi-val{font-size:1.5em;font-weight:700;color:var(--brand-gold)}
+.kpi-item .kpi-label{font-size:0.78em;color:#888}
+.timeline{position:relative;padding-left:28px;margin:20px 0}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:var(--brand-gold)}
+.timeline-item{position:relative;margin-bottom:18px;padding:12px 16px;background:var(--bg);border-radius:8px}
+.timeline-item::before{content:'';position:absolute;left:-22px;top:16px;width:10px;height:10px;background:var(--brand-gold);border-radius:50%}
+.timeline-item .time-label{font-size:0.78em;color:var(--brand-gold);font-weight:600}
+.highlight{background:rgba(212,160,23,0.1);padding:14px 18px;border-radius:8px;margin:12px 0;font-size:0.93em}
+.highlight strong{color:var(--brand-red)}
+.footer{text-align:center;padding:32px 20px;color:#999;font-size:0.82em}
+.footer .brand-line{color:var(--brand-gold);font-weight:600;margin-bottom:4px}
+@media(max-width:600px){.cover{padding:48px 20px}.cover h1{font-size:1.6em}.section{padding:24px 16px}.pyramid-tier{width:90%!important}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- 封面 -->
+<div class="cover">
+  <div class="brand">黔有财 · 贵州地摊酸汤火锅 · 30家门店</div>
+  <h1>会员精准运营 · 四层分级策略</h1>
+  <div class="subtitle">基于RFM模型的37,740名会员分层运营方案</div>
+  <div class="stats-bar">
+    <div class="stat-item"><div class="num">37,740</div><div class="label">总会员数</div></div>
+    <div class="stat-item"><div class="num">30</div><div class="label">门店数量</div></div>
+    <div class="stat-item"><div class="num">23.9%</div><div class="label">当前复购率</div></div>
+    <div class="stat-item"><div class="num">30%+</div><div class="label">3个月目标</div></div>
+  </div>
+</div>
+
+<!-- 1. 现状诊断 -->
+<div class="section">
+  <h2><span class="num">1</span>现状诊断：复购率23.9%的核心问题</h2>
+  <div class="card-grid">
+    <div class="card"><div class="value">14.3%</div><div class="desc">1→2次转化率<br><span class="tag tag-red">最大卡点</span></div></div>
+    <div class="card"><div class="value">¥170</div><div class="desc">一次客人均消费</div></div>
+    <div class="card"><div class="value">¥427</div><div class="desc">复购客人均消费</div></div>
+    <div class="card"><div class="value">3.9%</div><div class="desc">POS引导入会率</div></div>
+  </div>
+  <h3>🔍 三大核心问题</h3>
+  <div class="highlight"><strong>问题一 · 1→2次转化断崖</strong>：14.3%远低于2→3次的34.8%。首次体验后缺乏有效"钩子"拉回顾客，第二次消费是整个会员生命周期的生死关。</div>
+  <div class="highlight"><strong>问题二 · 门店复购率极度分化</strong>：珠海55.3% vs 棠东3.2%，差距17倍。标杆方法论未体系化复制。</div>
+  <div class="highlight"><strong>问题三 · 会员入口漏损</strong>：POS引导率仅3.9%，33.9%扫码点餐。大量到店顾客未被纳入会员体系。</div>
+  <h3>📊 复购漏斗</h3>
+  <div class="funnel">
+    <div class="funnel-step f1">37,740人 · 全体会员（100%）</div>
+    <div class="funnel-arrow">↓ 转化仅14.3%</div>
+    <div class="funnel-step f2">~5,400人 · 2次消费</div>
+    <div class="funnel-arrow">↓ 转化34.8%</div>
+    <div class="funnel-step f3">~1,880人 · 3次消费</div>
+    <div class="funnel-arrow">↓ 转化40.2%</div>
+    <div class="funnel-step f4">~755人 · 4次+忠诚客</div>
+  </div>
+  <p style="text-align:center;color:#888;font-size:0.82em">关键洞察：跨过第2次后忠诚度快速攀升，运营资源应聚焦1→2次转化</p>
+</div>
+
+<!-- 2. RFM模型说明 -->
+<div class="section">
+  <h2><span class="num">2</span>RFM模型：为什么适合火锅行业</h2>
+  <div class="card-grid">
+    <div class="card"><div class="value" style="color:var(--brand-gold)">R</div><div class="desc"><strong>Recency</strong><br>最近消费距今<br>越近=越活跃</div></div>
+    <div class="card"><div class="value" style="color:var(--tier2)">F</div><div class="desc"><strong>Frequency</strong><br>消费频次<br>越多=越忠诚</div></div>
+    <div class="card"><div class="value" style="color:var(--brand-red)">M</div><div class="desc"><strong>Monetary</strong><br>消费金额<br>越高=越有价值</div></div>
+  </div>
+  <div class="strategy-box">
+    <h4>🍲 火锅行业适配性</h4>
+    <ul>
+      <li><strong>消费周期明确</strong>：社交聚餐场景，自然复购周期2-4周，R值可精准判断活跃度</li>
+      <li><strong>客单差异大</strong>：2人¥100 vs 6人¥500+，M值有效区分价值</li>
+      <li><strong>频次即忠诚</strong>：愿意来第3次的顾客忠诚度已经很高</li>
+      <li><strong>可干预性强</strong>：通过券/储值/赠菜可直接影响R和F</li>
+    </ul>
+  </div>
+  <h3>黔有财RFM四层标准</h3>
+  <table class="data-table">
+    <tr><th>层级</th><th>R（最近消费）</th><th>F（频次）</th><th>M（客单）</th><th>人数</th><th>占比</th></tr>
+    <tr><td><span class="tag tag-gold">高价值忠诚客</span></td><td>≤30天</td><td>月均≥2次</td><td>≥¥200</td><td>~3,000</td><td>8%</td></tr>
+    <tr><td><span class="tag tag-green">潜力成长客</span></td><td>≤60天</td><td>累计2-3次</td><td>¥150-200</td><td>~6,000</td><td>16%</td></tr>
+    <tr><td><span class="tag tag-red">一次流失风险客</span></td><td>>30天</td><td>仅1次</td><td>¥100-170</td><td>~23,400</td><td>62%</td></tr>
+    <tr><td><span class="tag tag-gray">沉睡高危客</span></td><td>>60天</td><td>≤1次</td><td>任意</td><td>~5,300</td><td>14%</td></tr>
+  </table>
+</div>
+
+<!-- 3. 四层金字塔 -->
+<div class="section">
+  <h2><span class="num">3</span>四层会员金字塔</h2>
+  <div class="pyramid">
+    <div class="pyramid-tier t1"><div class="tier-name">👑 高价值忠诚客</div><div class="tier-info">~3,000人（8%）· 贡献60%+营收 · LTV ¥5,000+/年</div></div>
+    <div class="pyramid-tier t2"><div class="tier-name">⭐ 潜力成长客</div><div class="tier-info">~6,000人（16%）· 已验证体验 · 待提频升级</div></div>
+    <div class="pyramid-tier t3"><div class="tier-name">⚠️ 一次流失风险客</div><div class="tier-info">~23,400人（62%）· 最大转化金矿 · 14.3%待突破</div></div>
+    <div class="pyramid-tier t4"><div class="tier-name">💤 沉睡高危客</div><div class="tier-info">~5,300人（14%）· 60天+未消费 · 最后唤醒窗口</div></div>
+  </div>
+  <table class="data-table">
+    <tr><th>维度</th><th>高价值忠诚客</th><th>潜力成长客</th><th>一次流失风险客</th><th>沉睡高危客</th></tr>
+    <tr><td>典型场景</td><td>商务宴请/家庭聚</td><td>朋友聚餐</td><td>偶然路过/被请</td><td>已遗忘</td></tr>
+    <tr><td>桌均人数</td><td>4-6人</td><td>3-4人</td><td>2-3人</td><td>—</td></tr>
+    <tr><td>价格敏感度</td><td>低（重体验）</td><td>中（重性价比）</td><td>高（需理由）</td><td>极高（需强刺激）</td></tr>
+    <tr><td>运营重点</td><td>锁定+尊享</td><td>提频+拓品</td><td>召回+首复购</td><td>唤醒+挽回</td></tr>
+  </table>
+</div>
+
+<!-- 4. 层级一 -->
+<div class="section">
+  <h2><span class="num">4</span>层级一 · 高价值忠诚客策略</h2>
+  <p><span class="tag tag-gold">~3,000人</span> <span class="tag tag-gold">贡献60%+营收</span> <span class="tag tag-gold">核心：锁定+尊享</span></p>
+  <div class="highlight">🎯 目标：月均频次2→2.5次，储值率0→35%，年度留存95%+</div>
+
+  <div class="strategy-box tier1">
+    <h4>策略A · 储值锁定计划</h4>
+    <ul>
+      <li><strong>方案</strong>：充¥1000送¥150（15%）/ 充¥2000送¥350（17.5%）/ 充¥3000送¥600（20%）</li>
+      <li><strong>时机</strong>：第4次消费结账时，服务员话术："姐，您已是金卡VIP，今天充值享专属折扣~"</li>
+      <li><strong>权益</strong>：储值客享锅底升级（普通→精品酸汤）、优先排位</li>
+      <li><strong>预期</strong>：转化900人储值，锁定期6个月+，月频次+0.5次</li>
+    </ul>
+  </div>
+  <div class="strategy-box tier1">
+    <h4>策略B · 专属权益体系</h4>
+    <ul>
+      <li><strong>金卡</strong>：消费满5次自动升级，享全场9折</li>
+      <li><strong>会员日</strong>：每月8号金卡专属菜品半价（招牌毛肚¥29→¥15）</li>
+      <li><strong>新品优先</strong>：新菜上市前3天，金卡免费试吃（每店5桌）</li>
+      <li><strong>预期</strong>：月频次+0.3次，月活跃率90%+</li>
+    </ul>
+  </div>
+  <div class="strategy-box tier1">
+    <h4>策略C · 生日惊喜计划</h4>
+    <ul>
+      <li><strong>生日前7天</strong>：推送"专属生日礼券¥88"（满¥200可用）</li>
+      <li><strong>当天到店</strong>：赠长寿面+蛋糕+全桌拍照（成本约¥25）</li>
+      <li><strong>文案</strong>："贵州酸汤里藏着我们的祝福🎂 凭券享¥88减免，带家人来~"</li>
+      <li><strong>预期</strong>：生日到店率60%+，桌均¥350+</li>
+    </ul>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-item"><div class="kpi-val">2.5次/月</div><div class="kpi-label">目标频次</div></div>
+    <div class="kpi-item"><div class="kpi-val">35%</div><div class="kpi-label">储值转化率</div></div>
+    <div class="kpi-item"><div class="kpi-val">95%</div><div class="kpi-label">年度留存</div></div>
+    <div class="kpi-item"><div class="kpi-val">¥6,000+</div><div class="kpi-label">年LTV</div></div>
+  </div>
+</div>
+
+<!-- 5. 层级二 -->
+<div class="section">
+  <h2><span class="num">5</span>层级二 · 潜力成长客策略</h2>
+  <p><span class="tag tag-green">~6,000人</span> <span class="tag tag-green">已验证体验</span> <span class="tag tag-green">核心：提频+拓品</span></p>
+  <div class="highlight">🎯 目标：3个月内30%（~1,800人）升级为忠诚客，季频次2.5→4次</div>
+
+  <div class="strategy-box tier2">
+    <h4>策略A · 频次阶梯激励</h4>
+    <ul>
+      <li><strong>第3次</strong>：赠招牌菜1份（贵州折耳根/酸汤肥牛，成本¥12）</li>
+      <li><strong>第5次</strong>：全单88折（封顶优惠¥60）</li>
+      <li><strong>第8次</strong>：升级金卡+赠¥50储值券</li>
+      <li><strong>触达</strong>：消费后24h推送"再来1次即可解锁xxx🎉"</li>
+      <li><strong>文案</strong>："还差1次解锁「招牌菜免费送」🎉 这周末约朋友来尝？"</li>
+      <li><strong>预期</strong>：3次到达率从34.8%→45%，ROI约1:8</li>
+    </ul>
+  </div>
+  <div class="strategy-box tier2">
+    <h4>策略B · 品类拓展+社交裂变</h4>
+    <ul>
+      <li><strong>锅底升级</strong>：体验过番茄锅的，赠"酸汤锅底免费体验券"</li>
+      <li><strong>带新人</strong>：老带新，老客得¥30券，新客首单减¥20</li>
+      <li><strong>拼桌有礼</strong>：4人+用餐赠甜品拼盘（成本¥8）</li>
+      <li><strong>晒图返券</strong>：点评/小红书发图，验证后返¥15券</li>
+      <li><strong>触达时机</strong>：上次消费后14天（自然复购周期）</li>
+      <li><strong>预期</strong>：客单从¥175→¥200，桌均人数3.2→3.8人</li>
+    </ul>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-item"><div class="kpi-val">4次/季</div><div class="kpi-label">目标频次</div></div>
+    <div class="kpi-item"><div class="kpi-val">30%</div><div class="kpi-label">升级率</div></div>
+    <div class="kpi-item"><div class="kpi-val">¥200</div><div class="kpi-label">目标客单</div></div>
+    <div class="kpi-item"><div class="kpi-val">1:8</div><div class="kpi-label">投入ROI</div></div>
+  </div>
+</div>
+
+<!-- 6. 层级三 -->
+<div class="section">
+  <h2><span class="num">6</span>层级三 · 一次流失风险客策略</h2>
+  <p><span class="tag tag-red">~23,400人</span> <span class="tag tag-red">最大转化池</span> <span class="tag tag-red">核心：阶梯召回</span></p>
+  <div class="highlight">🎯 目标：1→2次转化率从14.3%→25%，3个月回流3,500+人</div>
+
+  <div class="strategy-box tier3">
+    <h4>策略A · 7/15/30天阶梯召回</h4>
+    <ul>
+      <li><strong>第7天</strong>（温情提醒）：短信"上次的酸汤还记得吗？送您一份专属回味礼🎁"——赠¥15券（满¥100用）</li>
+      <li><strong>第15天</strong>（加码激励）：短信"好久不见！特别为您准备了招牌菜免费吃券🍖"——赠指定菜品免费券（成本¥15）</li>
+      <li><strong>第30天</strong>（强力召回）：短信"最后一张VIP专属券即将过期⏰"——赠¥30券（满¥120用）+限时3天</li>
+      <li><strong>文案参考</strong>：<br>7天："嘿~上次的贵州酸汤还在回味吗？凭此券再来，立减¥15！有效期7天→"<br>15天："想念那口鲜酸了吧🤤 这次请你吃招牌毛肚，周末约起？"<br>30天："最后通知📢 ¥30专属红包明天过期！贵州酸汤等你回家~"</li>
+      <li><strong>触达通道</strong>：短信为主（成本¥0.04/条）+ 公众号/企微辅助</li>
+      <li><strong>预期</strong>：7天回流率5% + 15天回流率4% + 30天回流率3% = 总回流12%，约2,800人</li>
+    </ul>
+  </div>
+  <div class="strategy-box tier3">
+    <h4>策略B · 场景化精准触达</h4>
+    <ul>
+      <li><strong>天气触发</strong>：降温天推送"天冷了，一锅酸汤暖全身🔥 专属¥20券已到账"</li>
+      <li><strong>节假日</strong>：周五下午推送"周末聚餐还没想好？酸汤火锅安排上✨"</li>
+      <li><strong>同行者券</strong>：赠"闺蜜/兄弟券"——带1位新朋友来，两人各减¥15</li>
+      <li><strong>黄金时段引导</strong>：避开18-19时高峰，推17:00-18:00早鸟优惠¥10减免</li>
+      <li><strong>预期</strong>：场景化触达打开率比普通短信高40%，额外回流700+人</li>
+    </ul>
+  </div>
+  <div class="strategy-box tier3">
+    <h4>策略C · 门店差异化执行</h4>
+    <ul>
+      <li><strong>高复购门店</strong>（珠海等>30%）：减少券补贴，侧重品质体验和口碑裂变</li>
+      <li><strong>低复购门店</strong>（棠东等<10%）：加大券力度（¥30→¥40），同步排查服务问题</li>
+      <li><strong>复制标杆</strong>：提炼珠海门店55.3%复购的核心SOP，向低分门店输出</li>
+    </ul>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-item"><div class="kpi-val">25%</div><div class="kpi-label">目标1→2转化率</div></div>
+    <div class="kpi-item"><div class="kpi-val">3,500+</div><div class="kpi-label">3个月回流人数</div></div>
+    <div class="kpi-item"><div class="kpi-val">¥0.04</div><div class="kpi-label">短信成本/条</div></div>
+    <div class="kpi-item"><div class="kpi-val">1:12</div><div class="kpi-label">召回ROI</div></div>
+  </div>
+</div>
+
+<!-- 7. 层级四 -->
+<div class="section">
+  <h2><span class="num">7</span>层级四 · 沉睡高危客策略</h2>
+  <p><span class="tag tag-gray">~5,300人</span> <span class="tag tag-gray">60天+未消费</span> <span class="tag tag-gray">核心：强力唤醒</span></p>
+  <div class="highlight">🎯 目标：唤醒率8%+（~420人回流），筛选出真正流失客做清理</div>
+
+  <div class="strategy-box tier4">
+    <h4>策略A · 强力无门槛唤醒</h4>
+    <ul>
+      <li><strong>无门槛券</strong>：¥20直减券（无消费门槛），有效期7天</li>
+      <li><strong>情感文案</strong>："好久不见😢 贵州酸汤一直在等你回来。这¥20是我们的思念，随时来~"</li>
+      <li><strong>触达策略</strong>：短信+电话AI外呼（仅针对历史消费¥200+的高M值沉睡客）</li>
+      <li><strong>预期</strong>：无门槛券核销率约10%，回流约530人</li>
+    </ul>
+  </div>
+  <div class="strategy-box tier4">
+    <h4>策略B · 最后挽回+流失标记</h4>
+    <ul>
+      <li><strong>90天未响应</strong>：发送最终唤醒"最后一张券¥25无门槛+送饮品"</li>
+      <li><strong>120天仍未来</strong>：标记为"彻底流失"，停止触达（节省短信成本）</li>
+      <li><strong>流失分析</strong>：按门店/时段/消费额分析流失原因，反哺服务改进</li>
+      <li><strong>预期</strong>：最终挽回4%，节省无效触达成本约¥200/月</li>
+    </ul>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-item"><div class="kpi-val">8%+</div><div class="kpi-label">唤醒率</div></div>
+    <div class="kpi-item"><div class="kpi-val">¥20</div><div class="kpi-label">无门槛券面额</div></div>
+    <div class="kpi-item"><div class="kpi-val">420+</div><div class="kpi-label">回流人数</div></div>
+    <div class="kpi-item"><div class="kpi-val">120天</div><div class="kpi-label">流失标记周期</div></div>
+  </div>
+</div>
+
+<!-- 8. 复购漏斗优化 -->
+<div class="section">
+  <h2><span class="num">8</span>复购漏斗优化：14.3%→25%的路径</h2>
+  <div class="highlight">核心公式：<strong>复购率 = 首次体验满意度 × 触达有效性 × 激励吸引力</strong></div>
+
+  <h3>📋 三板斧提升1→2次转化</h3>
+  <div class="strategy-box">
+    <h4>板斧一 · 首次体验升级（提升满意度）</h4>
+    <ul>
+      <li>首次到店赠"酸汤小知识卡"（增加品牌认知，成本¥0.5）</li>
+      <li>服务员主动介绍"正宗吃法"（增加互动记忆点）</li>
+      <li>结账时赠小瓶酸汤酱料带走（成本¥3，创造家庭消费场景联想）</li>
+      <li><strong>目标</strong>：首次NPS从70分→82分</li>
+    </ul>
+  </div>
+  <div class="strategy-box">
+    <h4>板斧二 · 离店后48小时黄金触达</h4>
+    <ul>
+      <li>消费后2小时：公众号推送满意度问卷（完成即得¥10券）</li>
+      <li>消费后48小时：短信推送"二次体验券¥20"（满¥100，7天有效）</li>
+      <li>消费后7天：若未核销，再触发一次提醒"券快过期啦"</li>
+      <li><strong>目标</strong>：48小时券领取率35%+，核销率15%+</li>
+    </ul>
+  </div>
+  <div class="strategy-box">
+    <h4>板斧三 · 扫码点餐即入会（解决入口问题）</h4>
+    <ul>
+      <li>扫码点餐流程嵌入"一键注册会员"（手机号自动填充）</li>
+      <li>注册即享"本次消费随机立减¥3-8"</li>
+      <li>POS结账话术标准化："扫码入会本单立减¥5，需要帮您操作吗？"</li>
+      <li><strong>目标</strong>：入会率从3.9%→15%，月新增会员+5,000人</li>
+    </ul>
+  </div>
+
+  <h3>📈 预期提升曲线</h3>
+  <table class="data-table">
+    <tr><th>时间</th><th>1→2次转化率</th><th>整体复购率</th><th>关键动作</th></tr>
+    <tr><td>当前</td><td>14.3%</td><td>23.9%</td><td>—</td></tr>
+    <tr><td>第1个月</td><td>17%</td><td>25.5%</td><td>阶梯召回上线+48h触达</td></tr>
+    <tr><td>第2个月</td><td>21%</td><td>27.8%</td><td>扫码入会优化+频次激励</td></tr>
+    <tr><td>第3个月</td><td>25%</td><td>30.2%</td><td>全链路打通+储值锁定</td></tr>
+  </table>
+</div>
+
+<!-- 9. 执行排期+ROI -->
+<div class="section">
+  <h2><span class="num">9</span>执行排期与预期ROI</h2>
+
+  <h3>🗓️ 12周执行排期</h3>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="time-label">第1-2周 · 基础建设期</div>
+      <p>① 完成RFM数据分层标签打标 ② 设计全套券模板（7/15/30天召回+频次激励+储值方案）③ 短信通道测试 ④ 扫码点餐入会流程改造</p>
+    </div>
+    <div class="timeline-item">
+      <div class="time-label">第3-4周 · 召回启动期</div>
+      <p>① 一次流失风险客阶梯召回全量上线 ② 沉睡客无门槛券触达 ③ 首次体验升级动作落地（酱料/知识卡）④ 48h二次券自动触发上线</p>
+    </div>
+    <div class="timeline-item">
+      <div class="time-label">第5-8周 · 成长加速期</div>
+      <p>① 潜力客频次激励全面铺开 ② 高价值客储值计划启动 ③ 生日惊喜/会员日上线 ④ 监控各层转化数据，A/B测试券面额</p>
+    </div>
+    <div class="timeline-item">
+      <div class="time-label">第9-12周 · 深化优化期</div>
+      <p>① 标杆门店方法论复制至低分店 ② 沉睡客120天流失标记 ③ 全链路ROI复盘 ④ 策略迭代（调整券面额/文案/时机）</p>
+    </div>
+  </div>
+
+  <h3>💰 投入产出测算</h3>
+  <table class="data-table">
+    <tr><th>策略项</th><th>覆盖人群</th><th>单人成本</th><th>总投入</th><th>预期回流/升级</th><th>预期增收</th><th>ROI</th></tr>
+    <tr><td>阶梯召回券</td><td>23,400人</td><td>¥15-30</td><td>~¥50,000</td><td>3,500人回流</td><td>¥595,000</td><td>1:12</td></tr>
+    <tr><td>频次激励</td><td>6,000人</td><td>¥12-60</td><td>~¥30,000</td><td>1,800人升级</td><td>¥270,000</td><td>1:9</td></tr>
+    <tr><td>储值锁定</td><td>3,000人</td><td>¥0（让利）</td><td>~¥135,000</td><td>900人储值</td><td>¥1,800,000</td><td>1:13</td></tr>
+    <tr><td>沉睡唤醒</td><td>5,300人</td><td>¥20-25</td><td>~¥15,000</td><td>420人回流</td><td>¥71,400</td><td>1:5</td></tr>
+    <tr><td>短信触达</td><td>全量</td><td>¥0.04/条</td><td>~¥6,000</td><td>—</td><td>—</td><td>—</td></tr>
+    <tr style="font-weight:700;background:rgba(212,160,23,0.08)"><td>合计</td><td>—</td><td>—</td><td>~¥236,000</td><td>—</td><td>~¥2,736,000</td><td>1:11.6</td></tr>
+  </table>
+
+  <h3>🎯 3个月核心KPI</h3>
+  <div class="kpi-row">
+    <div class="kpi-item"><div class="kpi-val">30.2%</div><div class="kpi-label">复购率（现23.9%）</div></div>
+    <div class="kpi-item"><div class="kpi-val">25%</div><div class="kpi-label">1→2转化率（现14.3%）</div></div>
+    <div class="kpi-item"><div class="kpi-val">6,640+</div><div class="kpi-label">新增复购客</div></div>
+    <div class="kpi-item"><div class="kpi-val">¥273万+</div><div class="kpi-label">预期增收</div></div>
+  </div>
+
+  <div class="highlight" style="margin-top:24px">
+    <strong>📌 核心结论</strong>：黔有财37,740名会员中，62%的一次客是最大的"金矿"。通过RFM四层分级运营，聚焦1→2次转化突破（14.3%→25%），配合储值锁定高价值客、频次激励成长客、强力唤醒沉睡客的组合拳，预计3个月内整体复购率从23.9%突破30%，年增收超¥270万。<br><br>
+    <strong>关键成功因素</strong>：① 首次体验做到极致（让人想来第2次）② 48小时内触达（趁热打铁）③ 门店差异化执行（标杆复制）④ 数据驱动迭代（每周看转化率变化）
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="brand-line">黔有财 · 贵州地摊酸汤火锅</div>
+  <div>RFM会员分层运营方案 · 2025年5月</div>
+  <div style="margin-top:8px">「让每一位到店客人，都有理由再来一次」</div>
+</div>
+
+</div>
+</body>
+</html>
